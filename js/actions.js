@@ -1,57 +1,10 @@
-/*
-Actions:
-1. generate a random number
-2. guess a number
-3. Post guessed numbers
-4. increment count for guesses
-5. Alert number already guessed
-6. Alert feedback
-7. Reset game
-*/
-
-var GENERATE_RAND_NUM = 'GENERATE_RAND_NUM';
-var generateRandNum = function(randomNum) {
-    return {
-        type: GENERATE_RAND_NUM,
-        randomNum: randomNum
-    }
-};
+var $ = require("jquery")
 
 var GUESS_NUM = 'GUESS_NUM';
 var guessNum = function(userGuess) {
     return {
         type: GUESS_NUM,
         userGuess: userGuess
-    };
-};
-
-var POST_GUESSED_NUMS = 'POST_GUESSED_NUMS';
-var postGuessedNums = function(guessList) {
-    return {
-        type: POST_GUESSED_NUMS,
-        guessList: guessList
-    };
-};
-
-var INCREMENT_COUNT = 'INCREMENT_COUNT';
-var incrementCount = function() {
-    return {
-        type: INCREMENT_COUNT
-    };
-};
-
-var ALERT_ALREADY_GUESSED = 'ALERT_ALREADY_GUESSED';
-var alertAlreadyGuessed = function() {
-    return {
-        type: ALERT_ALREADY_GUESSED
-    };
-};
-
-var ALERT_FEEDBACK = 'ALERT_FEEDBACK';
-var alertFeedback = function() {
-    return {
-        type: ALERT_FEEDBACK,
-        feedback: feedback
     };
 };
 
@@ -62,17 +15,93 @@ var resetGame = function() {
     };
 };
 
-exports.GENERATE_RAND_NUM = GENERATE_RAND_NUM;
-exports.generateRandNum = generateRandNum;
-exports.GUESS_NUM = GUESS_NUM;
-exports.guessNum = guessNum;
-exports.POST_GUESSED_NUMS = POST_GUESSED_NUMS;
-exports.postGuessedNums = postGuessedNums;
-exports.INCREMENT_COUNT = INCREMENT_COUNT;
-exports.incrementCount = incrementCount;
-exports.ALERT_ALREADY_GUESSED = ALERT_ALREADY_GUESSED;
-exports.alertAlreadyGuessed = alertAlreadyGuessed;
-exports.ALERT_FEEDBACK  = ALERT_FEEDBACK ;
-exports.alertFeedback = alertFeedback;
+var FETCH_FEWEST_GUESSES_SUCCESS = 'FETCH_FEWEST_GUESSES_SUCCESS';
+var fetchFewestGuessesSuccess = function(fewestGuesses) {
+    return {
+        type: FETCH_FEWEST_GUESSES_SUCCESS,
+        fewestGuesses: fewestGuesses
+    };
+};
+
+var FETCH_FEWEST_GUESSES_ERROR = 'FETCH_DESCRIPTION_ERROR';
+var fetchFewestGuessesError = function(error) {
+    return {
+        type: FETCH_FEWEST_GUESSES_ERROR,
+        error: error
+    };
+};
+
+var POST_FEWEST_GUESSES_SUCCESS = 'POST_FEWEST_GUESSES_SUCCESS';
+var postFewestGuessesSuccess = function(fewestGuesses) {
+    return {
+        type: POST_FEWEST_GUESSES_SUCCESS,
+        fewestGuesses: fewestGuesses
+    };
+};
+
+var POST_FEWEST_GUESSES_ERROR = 'POST_DESCRIPTION_ERROR';
+var postFewestGuessesError = function(error) {
+    return {
+        type: POST_FEWEST_GUESSES_ERROR,
+        error: error
+    };
+};
+
+var fetchGuesses = function() {
+    return function(dispatch) {
+        var url = '/fewest-guesses';
+        return fetch(url).then(function(response) {
+            if (response.status < 200 || response.status >= 300) {
+                var error = new Error(response.statusText);
+                error.response = response;
+                throw error;
+            }
+            return response;
+        })
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(data) {
+            var guessList = data.guessList;
+            return dispatch(
+                fetchFewestGuessesSuccess(guessList)
+            );
+        })
+        .catch(function(error) {
+            return dispatch(
+                fetchFewestGuessesError(error)
+            );
+        });
+    };
+};
+
+var postGuesses = function(count) {
+  return function(dispatch) {
+    $.post("/fewest-guesses/" + count)
+      .done(function(data){
+        return dispatch(
+            postFewestGuessesSuccess(data)
+        );
+      })
+      .catch(function(error){
+        return dispatch(
+            postFewestGuessesError(error)
+        );
+      });
+    };
+};
+
 exports.RESET_GAME = RESET_GAME;
 exports.resetGame = resetGame;
+exports.GUESS_NUM = GUESS_NUM;
+exports.guessNum = guessNum;
+exports.FETCH_FEWEST_GUESSES_SUCCESS = FETCH_FEWEST_GUESSES_SUCCESS;
+exports.fetchFewestGuessesSuccess = fetchFewestGuessesSuccess;
+exports.FETCH_FEWEST_GUESSES_ERROR = FETCH_FEWEST_GUESSES_ERROR;
+exports.fetchFewestGuessesError = fetchFewestGuessesError;
+exports.POST_FEWEST_GUESSES_SUCCESS = POST_FEWEST_GUESSES_SUCCESS;
+exports.postFewestGuessesSuccess = postFewestGuessesSuccess;
+exports.POST_FEWEST_GUESSES_ERROR = POST_FEWEST_GUESSES_ERROR;
+exports.postFewestGuessesError = postFewestGuessesError;
+exports.fetchGuesses = fetchGuesses;
+exports.postGuesses = postGuesses;
