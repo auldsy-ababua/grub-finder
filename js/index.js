@@ -8,7 +8,6 @@ var Provider = require('react-redux').Provider;
 var store = require('./store');
 var NewGameButton = require('./new-game-button');
 var GuessForm = require('./guess-form');
-var GuessList = require('./guess-list');
 
 
 var Game = React.createClass({
@@ -17,7 +16,6 @@ var Game = React.createClass({
           <div>
             <NewGameButton />
             <GuessForm />
-            <GuessList />
           </div>
         );
     }

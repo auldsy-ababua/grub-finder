@@ -79,8 +79,10 @@ var postGuesses = function(count) {
   return function(dispatch) {
     $.post("/fewest-guesses/" + count)
       .done(function(data){
+        console.log(data);
         return dispatch(
             postFewestGuessesSuccess(data)
+
         );
       })
       .catch(function(error){

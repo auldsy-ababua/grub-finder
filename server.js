@@ -26,7 +26,9 @@ app.get('/fewest-guesses', jsonParser, function(req, res) {
 
 
 app.post('/fewest-guesses/:count', function(req, res) {
-    if (!fewestGuesses || fewestGuesses > req.params.count) {
+    if (!fewestGuesses) {
+      fewestGuesses = req.params.count;
+    } else if (fewestGuesses > req.params.count) {
       fewestGuesses = req.params.count;
       console.log(fewestGuesses);
     }

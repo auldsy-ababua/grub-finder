@@ -28,13 +28,15 @@ var repositoryReducer = function(state, action) {
         state = initialRepositoryState;
         var randNum = generateNumber();
         state = Object.assign({}, state, {
-          randomNum: randNum
+          randomNum: randNum,
+          fewestGuesses: leastGuesses
         });
         console.log(state);
         return state;
     }
     else if (action.type === actions.GUESS_NUM) {
       state.userGuess = action.userGuess;
+      var guessList = state.guessList;
       var count = state.guessList.length;
       var filterGuess = state.guessList.filter(function(value){
         return value == state.userGuess;
@@ -43,7 +45,7 @@ var repositoryReducer = function(state, action) {
         state.feedback = "You've already guessed that!";
       }
       else {
-        state.guessList.push(" " + action.userGuess);
+        guessList = state.guessList.concat(action.userGuess);
         count = state.guessList.length;
         if(state.userGuess == state.randomNum){
             state.feedback = 'You Won. Play again!';
@@ -58,11 +60,13 @@ var repositoryReducer = function(state, action) {
             state.feedback = 'Cold';
         }
 
-        console.log(count);
+        console.log("this is your count" + count);
       }
 
       return Object.assign({}, state, {
-        count: count
+        count: guessList.length,
+        feedback: state.feedback,
+        guessList: guessList
       });
 
     }
@@ -75,6 +79,23 @@ var repositoryReducer = function(state, action) {
         }
 
     else if (action.type === actions.FETCH_FEWEST_GUESSES_ERROR && state.guessList.length > 0) {
+            return Object.assign({}, state, {
+                feedback: "Internal server error"
+            });
+        }
+    else if (action.type === actions.POST_FEWEST_GUESSES_SUCCESS) {
+      console.log(state.guessList.length);
+      console.log(action.fewestGuesses);
+            if (state.guessList.length == action.fewestGuesses) {
+              alert("your new high score is " + action.fewestGuesses);
+            }
+            var newState = Object.assign({}, state, {
+                fewestGuesses: action.fewestGuesses
+            });
+            return newState;
+        }
+
+    else if (action.type === actions.POST_FEWEST_GUESSES_ERROR) {
             return Object.assign({}, state, {
                 feedback: "Internal server error"
             });

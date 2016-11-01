@@ -35,7 +35,7 @@ var GuessForm = React.createClass({
         </div>
         <div id="guessList">
           <h3>You have guessed:</h3>
-          <h3>{this.props.guessList.toString()}</h3>
+          <h3>{this.props.guessList.join(", ")}</h3>
         </div>
       </div>
     );
@@ -45,9 +45,11 @@ var GuessForm = React.createClass({
 var mapStateToProps = function(state, props) {
     return {
         feedback: state.feedback,
-        guessList: state.guessList
+        guessList: state.guessList,
+        fewestGuesses: state.fewestGuesses
     };
 };
 var Container = connect(mapStateToProps)(GuessForm);
+
 
 module.exports = Container;

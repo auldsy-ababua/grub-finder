@@ -54,7 +54,6 @@
 	var store = __webpack_require__(200);
 	var NewGameButton = __webpack_require__(205);
 	var GuessForm = __webpack_require__(206);
-	var GuessList = __webpack_require__(207);
 	
 	var Game = React.createClass({
 	    displayName: 'Game',
@@ -64,8 +63,7 @@
 	            'div',
 	            null,
 	            React.createElement(NewGameButton, null),
-	            React.createElement(GuessForm, null),
-	            React.createElement(GuessList, null)
+	            React.createElement(GuessForm, null)
 	        );
 	    }
 	});
@@ -23264,12 +23262,14 @@
 	        state = initialRepositoryState;
 	        var randNum = generateNumber();
 	        state = Object.assign({}, state, {
-	            randomNum: randNum
+	            randomNum: randNum,
+	            fewestGuesses: leastGuesses
 	        });
 	        console.log(state);
 	        return state;
 	    } else if (action.type === actions.GUESS_NUM) {
 	        state.userGuess = action.userGuess;
+	        var guessList = state.guessList;
 	        var count = state.guessList.length;
 	        var filterGuess = state.guessList.filter(function (value) {
 	            return value == state.userGuess;
@@ -23277,7 +23277,7 @@
 	        if (filterGuess.length > 0) {
 	            state.feedback = "You've already guessed that!";
 	        } else {
-	            state.guessList.push(" " + action.userGuess);
+	            guessList = state.guessList.concat(action.userGuess);
 	            count = state.guessList.length;
 	            if (state.userGuess == state.randomNum) {
 	                state.feedback = 'You Won. Play again!';
@@ -23292,11 +23292,13 @@
 	                state.feedback = 'Cold';
 	            }
 	
-	            console.log(count);
+	            console.log("this is your count" + count);
 	        }
 	
 	        return Object.assign({}, state, {
-	            count: count
+	            count: guessList.length,
+	            feedback: state.feedback,
+	            guessList: guessList
 	        });
 	    } else if (action.type === actions.FETCH_FEWEST_GUESSES_SUCCESS) {
 	        var newState = Object.assign({}, state, {
@@ -23304,6 +23306,20 @@
 	        });
 	        return newState;
 	    } else if (action.type === actions.FETCH_FEWEST_GUESSES_ERROR && state.guessList.length > 0) {
+	        return Object.assign({}, state, {
+	            feedback: "Internal server error"
+	        });
+	    } else if (action.type === actions.POST_FEWEST_GUESSES_SUCCESS) {
+	        console.log(state.guessList.length);
+	        console.log(action.fewestGuesses);
+	        if (state.guessList.length == action.fewestGuesses) {
+	            alert("your new high score is " + action.fewestGuesses);
+	        }
+	        var newState = Object.assign({}, state, {
+	            fewestGuesses: action.fewestGuesses
+	        });
+	        return newState;
+	    } else if (action.type === actions.POST_FEWEST_GUESSES_ERROR) {
 	        return Object.assign({}, state, {
 	            feedback: "Internal server error"
 	        });
@@ -23393,6 +23409,7 @@
 	var postGuesses = function postGuesses(count) {
 	    return function (dispatch) {
 	        $.post("/fewest-guesses/" + count).done(function (data) {
+	            console.log(data);
 	            return dispatch(postFewestGuessesSuccess(data));
 	        }).catch(function (error) {
 	            return dispatch(postFewestGuessesError(error));
@@ -33745,7 +33762,7 @@
 	        React.createElement(
 	          'h3',
 	          null,
-	          this.props.guessList.toString()
+	          this.props.guessList.join(", ")
 	        )
 	      )
 	    );
@@ -33755,50 +33772,13 @@
 	var mapStateToProps = function mapStateToProps(state, props) {
 	  return {
 	    feedback: state.feedback,
-	    guessList: state.guessList
+	    guessList: state.guessList,
+	    fewestGuesses: state.fewestGuesses
 	  };
 	};
 	var Container = connect(mapStateToProps)(GuessForm);
 	
 	module.exports = Container;
-
-/***/ },
-/* 207 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var React = __webpack_require__(1);
-	var connect = __webpack_require__(172).connect;
-	
-	var actions = __webpack_require__(203);
-	
-	var GuessList = React.createClass({
-	  displayName: 'GuessList',
-	
-	  render: function render() {
-	    return React.createElement(
-	      'div',
-	      { className: 'list' },
-	      React.createElement(
-	        'div',
-	        { id: 'guessList' },
-	        React.createElement(
-	          'h3',
-	          null,
-	          this.props.guessList.toString()
-	        )
-	      )
-	    );
-	  }
-	});
-	
-	var mapStateToProps = function mapStateToProps(state, props) {
-	  return {
-	    guessList: state.guessList
-	  };
-	};
-	module.exports = connect(mapStateToProps)(GuessList);
 
 /***/ }
 /******/ ]);
