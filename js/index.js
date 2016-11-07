@@ -6,16 +6,15 @@ var ReactDOM = require('react-dom');
 var Provider = require('react-redux').Provider;
 
 var store = require('./store');
-var NewGameButton = require('./new-game-button');
-var GuessForm = require('./guess-form');
+var HelloWorld = require('./hello-world');
 
 
-var Game = React.createClass({
+
+var CapstoneApp = React.createClass({
     render: function() {
         return (
           <div>
-            <NewGameButton />
-            <GuessForm />
+            <HelloWorld />
           </div>
         );
     }
@@ -25,7 +24,7 @@ var Game = React.createClass({
 document.addEventListener('DOMContentLoaded', function() {
     ReactDOM.render(
         <Provider store={store}>
-            <Game />
+            <CapstoneApp />
         </Provider>,
         document.getElementById('app')
     );

@@ -1,6 +1,20 @@
 var actions = require('./actions');
 
-var generateNumber = function() {
+var initialState = {
+  type: null,
+  showMessage: false
+};
+
+var capstoneApp = function (state,action) {
+    var newState = Object.assign({}, state);
+    if (action.type === 'BUTTON_PRESS') {
+        newState.showMessage = !newState.showMessage;
+
+    }
+    return newState;
+};
+
+/*var generateNumber = function() {
     var secretNumber = Math.floor(Math.random() * 100) + 1;
     return secretNumber;
 };
@@ -103,5 +117,6 @@ var repositoryReducer = function(state, action) {
     console.log(state);
     return state;
 };
+*/
 
-exports.repositoryReducer = repositoryReducer;
+exports.capstoneApp = capstoneApp;

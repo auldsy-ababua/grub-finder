@@ -52,18 +52,16 @@
 	var Provider = __webpack_require__(172).Provider;
 	
 	var store = __webpack_require__(200);
-	var NewGameButton = __webpack_require__(205);
-	var GuessForm = __webpack_require__(206);
+	var HelloWorld = __webpack_require__(203);
 	
-	var Game = React.createClass({
-	    displayName: 'Game',
+	var CapstoneApp = React.createClass({
+	    displayName: 'CapstoneApp',
 	
 	    render: function render() {
 	        return React.createElement(
 	            'div',
 	            null,
-	            React.createElement(NewGameButton, null),
-	            React.createElement(GuessForm, null)
+	            React.createElement(HelloWorld, null)
 	        );
 	    }
 	});
@@ -73,7 +71,7 @@
 	    ReactDOM.render(React.createElement(
 	        Provider,
 	        { store: store },
-	        React.createElement(Game, null)
+	        React.createElement(CapstoneApp, null)
 	    ), document.getElementById('app'));
 	});
 
@@ -23196,7 +23194,7 @@
 	
 	var reducers = __webpack_require__(202);
 	
-	var store = createStore(reducers.repositoryReducer, applyMiddleware(thunk));
+	var store = createStore(reducers.capstoneApp, applyMiddleware(thunk));
 	module.exports = store;
 
 /***/ },
@@ -23233,102 +23231,127 @@
 
 	'use strict';
 	
-	var actions = __webpack_require__(203);
+	var actions = __webpack_require__(204);
 	
-	var generateNumber = function generateNumber() {
+	var initialState = {
+	    type: null,
+	    showMessage: false
+	};
+	
+	var capstoneApp = function capstoneApp(state, action) {
+	    var newState = Object.assign({}, state);
+	    if (action.type === 'BUTTON_PRESS') {
+	        newState.showMessage = !newState.showMessage;
+	    }
+	    return newState;
+	};
+	
+	/*var generateNumber = function() {
 	    var secretNumber = Math.floor(Math.random() * 100) + 1;
 	    return secretNumber;
 	};
 	
 	var initialRepositoryState = {
-	    type: null,
-	    randomNum: generateNumber(),
-	    userGuess: null,
-	    guessList: [],
-	    fewestGuesses: null,
-	    count: 0,
-	    feedback: ""
+	  type: null,
+	  randomNum: generateNumber(),
+	  userGuess: null,
+	  guessList: [],
+	  fewestGuesses: null,
+	  count: 0,
+	  feedback: ""
 	};
 	
-	var winner = function winner() {
+	var winner = function(){
 	    userFeedback = 'You Won. Click new game to play again';
 	};
 	
-	var repositoryReducer = function repositoryReducer(state, action) {
+	var repositoryReducer = function(state, action) {
 	    state = state || initialRepositoryState;
+	
 	
 	    if (action.type === actions.RESET_GAME) {
 	        var leastGuesses = state.fewestGuesses;
 	        state = initialRepositoryState;
 	        var randNum = generateNumber();
 	        state = Object.assign({}, state, {
-	            randomNum: randNum,
-	            fewestGuesses: leastGuesses
+	          randomNum: randNum,
+	          fewestGuesses: leastGuesses
 	        });
 	        console.log(state);
 	        return state;
-	    } else if (action.type === actions.GUESS_NUM) {
-	        state.userGuess = action.userGuess;
-	        var guessList = state.guessList;
-	        var count = state.guessList.length;
-	        var filterGuess = state.guessList.filter(function (value) {
-	            return value == state.userGuess;
-	        });
-	        if (filterGuess.length > 0) {
-	            state.feedback = "You've already guessed that!";
-	        } else {
-	            guessList = state.guessList.concat(action.userGuess);
-	            count = state.guessList.length;
-	            if (state.userGuess == state.randomNum) {
-	                state.feedback = 'You Won. Play again!';
-	                actions.postGuesses(count);
-	            } else if (Math.abs(state.randomNum - state.userGuess) < 10) {
-	                state.feedback = 'Hot';
-	            } else if (Math.abs(state.randomNum - state.userGuess) < 20 && Math.abs(state.randomNum - state.userGuess) > 9) {
-	                state.feedback = 'Kinda hot';
-	            } else if (Math.abs(state.randomNum - state.userGuess) < 30 && Math.abs(state.randomNum - state.userGuess) > 19) {
-	                state.feedback = 'Less than warm';
-	            } else {
-	                state.feedback = 'Cold';
-	            }
-	
-	            console.log("this is your count" + count);
-	        }
-	
-	        return Object.assign({}, state, {
-	            count: guessList.length,
-	            feedback: state.feedback,
-	            guessList: guessList
-	        });
-	    } else if (action.type === actions.FETCH_FEWEST_GUESSES_SUCCESS) {
-	        var newState = Object.assign({}, state, {
-	            fewestGuesses: action.fewestGuesses
-	        });
-	        return newState;
-	    } else if (action.type === actions.FETCH_FEWEST_GUESSES_ERROR && state.guessList.length > 0) {
-	        return Object.assign({}, state, {
-	            feedback: "Internal server error"
-	        });
-	    } else if (action.type === actions.POST_FEWEST_GUESSES_SUCCESS) {
-	        console.log(state.guessList.length);
-	        console.log(action.fewestGuesses);
-	        if (state.guessList.length == action.fewestGuesses) {
-	            alert("your new high score is " + action.fewestGuesses);
-	        }
-	        var newState = Object.assign({}, state, {
-	            fewestGuesses: action.fewestGuesses
-	        });
-	        return newState;
-	    } else if (action.type === actions.POST_FEWEST_GUESSES_ERROR) {
-	        return Object.assign({}, state, {
-	            feedback: "Internal server error"
-	        });
 	    }
+	    else if (action.type === actions.GUESS_NUM) {
+	      state.userGuess = action.userGuess;
+	      var guessList = state.guessList;
+	      var count = state.guessList.length;
+	      var filterGuess = state.guessList.filter(function(value){
+	        return value == state.userGuess;
+	      });
+	      if (filterGuess.length > 0) {
+	        state.feedback = "You've already guessed that!";
+	      }
+	      else {
+	        guessList = state.guessList.concat(action.userGuess);
+	        count = state.guessList.length;
+	        if(state.userGuess == state.randomNum){
+	            state.feedback = 'You Won. Play again!';
+	            actions.postGuesses(count);
+	        } else if(Math.abs(state.randomNum - state.userGuess) < 10){
+	            state.feedback = 'Hot';
+	        } else if(Math.abs(state.randomNum - state.userGuess) < 20 && Math.abs(state.randomNum - state.userGuess) > 9){
+	            state.feedback = 'Kinda hot';
+	        } else if(Math.abs(state.randomNum - state.userGuess) < 30 && Math.abs(state.randomNum - state.userGuess) > 19){
+	            state.feedback = 'Less than warm';
+	        } else {
+	            state.feedback = 'Cold';
+	        }
+	
+	        console.log("this is your count" + count);
+	      }
+	
+	      return Object.assign({}, state, {
+	        count: guessList.length,
+	        feedback: state.feedback,
+	        guessList: guessList
+	      });
+	
+	    }
+	
+	    else if (action.type === actions.FETCH_FEWEST_GUESSES_SUCCESS) {
+	            var newState = Object.assign({}, state, {
+	                fewestGuesses: action.fewestGuesses
+	            });
+	            return newState;
+	        }
+	
+	    else if (action.type === actions.FETCH_FEWEST_GUESSES_ERROR && state.guessList.length > 0) {
+	            return Object.assign({}, state, {
+	                feedback: "Internal server error"
+	            });
+	        }
+	    else if (action.type === actions.POST_FEWEST_GUESSES_SUCCESS) {
+	      console.log(state.guessList.length);
+	      console.log(action.fewestGuesses);
+	            if (state.guessList.length == action.fewestGuesses) {
+	              alert("your new high score is " + action.fewestGuesses);
+	            }
+	            var newState = Object.assign({}, state, {
+	                fewestGuesses: action.fewestGuesses
+	            });
+	            return newState;
+	        }
+	
+	    else if (action.type === actions.POST_FEWEST_GUESSES_ERROR) {
+	            return Object.assign({}, state, {
+	                feedback: "Internal server error"
+	            });
+	        }
 	    console.log(state);
 	    return state;
 	};
+	*/
 	
-	exports.repositoryReducer = repositoryReducer;
+	exports.capstoneApp = capstoneApp;
 
 /***/ },
 /* 203 */
@@ -23336,87 +23359,164 @@
 
 	'use strict';
 	
-	var $ = __webpack_require__(204);
+	var React = __webpack_require__(1);
+	var connect = __webpack_require__(172).connect;
+	var store = __webpack_require__(200);
+	var actions = __webpack_require__(204);
 	
-	var GUESS_NUM = 'GUESS_NUM';
-	var guessNum = function guessNum(userGuess) {
+	var HelloWorld = React.createClass({
+	  displayName: 'HelloWorld',
+	
+	  buttonPress: function buttonPress() {
+	    this.props.dispatch(actions.buttonPress());
+	  },
+	  render: function render() {
+	    var message = void 0;
+	    if (this.props.showMessage == true) {
+	      message = React.createElement(
+	        'h1',
+	        null,
+	        'hello world'
+	      );
+	    }
+	    return React.createElement(
+	      'div',
+	      { className: 'HelloWorld' },
+	      React.createElement(
+	        'button',
+	        { type: 'submit', onClick: this.buttonPress },
+	        'Click here!'
+	      ),
+	      React.createElement(
+	        'div',
+	        { id: 'helloDiv' },
+	        message
+	      )
+	    );
+	  }
+	});
+	
+	var mapStateToProps = function mapStateToProps(state, props) {
+	  return {
+	    showMessage: state.showMessage
+	  };
+	};
+	
+	var Container = connect(mapStateToProps)(HelloWorld);
+	
+	module.exports = Container;
+	module.exports.HelloWorld = HelloWorld;
+
+/***/ },
+/* 204 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var $ = __webpack_require__(205);
+	
+	var BUTTON_PRESS = 'BUTTON_PRESS';
+	var buttonPress = function buttonPress() {
+	    return {
+	        type: BUTTON_PRESS
+	    };
+	};
+	
+	exports.BUTTON_PRESS = BUTTON_PRESS;
+	exports.buttonPress = buttonPress;
+	/*var GUESS_NUM = 'GUESS_NUM';
+	var guessNum = function(userGuess) {
 	    return {
 	        type: GUESS_NUM,
 	        userGuess: userGuess
 	    };
 	};
-	
+
 	var RESET_GAME = 'RESET_GAME';
-	var resetGame = function resetGame() {
+	var resetGame = function() {
 	    return {
 	        type: RESET_GAME
 	    };
 	};
-	
+
 	var FETCH_FEWEST_GUESSES_SUCCESS = 'FETCH_FEWEST_GUESSES_SUCCESS';
-	var fetchFewestGuessesSuccess = function fetchFewestGuessesSuccess(fewestGuesses) {
+	var fetchFewestGuessesSuccess = function(fewestGuesses) {
 	    return {
 	        type: FETCH_FEWEST_GUESSES_SUCCESS,
 	        fewestGuesses: fewestGuesses
 	    };
 	};
-	
+
 	var FETCH_FEWEST_GUESSES_ERROR = 'FETCH_DESCRIPTION_ERROR';
-	var fetchFewestGuessesError = function fetchFewestGuessesError(error) {
+	var fetchFewestGuessesError = function(error) {
 	    return {
 	        type: FETCH_FEWEST_GUESSES_ERROR,
 	        error: error
 	    };
 	};
-	
+
 	var POST_FEWEST_GUESSES_SUCCESS = 'POST_FEWEST_GUESSES_SUCCESS';
-	var postFewestGuessesSuccess = function postFewestGuessesSuccess(fewestGuesses) {
+	var postFewestGuessesSuccess = function(fewestGuesses) {
 	    return {
 	        type: POST_FEWEST_GUESSES_SUCCESS,
 	        fewestGuesses: fewestGuesses
 	    };
 	};
-	
+
 	var POST_FEWEST_GUESSES_ERROR = 'POST_DESCRIPTION_ERROR';
-	var postFewestGuessesError = function postFewestGuessesError(error) {
+	var postFewestGuessesError = function(error) {
 	    return {
 	        type: POST_FEWEST_GUESSES_ERROR,
 	        error: error
 	    };
 	};
-	
-	var fetchGuesses = function fetchGuesses() {
-	    return function (dispatch) {
+
+	var fetchGuesses = function() {
+	    return function(dispatch) {
 	        var url = '/fewest-guesses';
-	        return fetch(url).then(function (response) {
+	        return fetch(url).then(function(response) {
 	            if (response.status < 200 || response.status >= 300) {
 	                var error = new Error(response.statusText);
 	                error.response = response;
 	                throw error;
 	            }
 	            return response;
-	        }).then(function (response) {
+	        })
+	        .then(function(response) {
 	            return response.json();
-	        }).then(function (data) {
+	        })
+	        .then(function(data) {
 	            var guessList = data.guessList;
-	            return dispatch(fetchFewestGuessesSuccess(guessList));
-	        }).catch(function (error) {
-	            return dispatch(fetchFewestGuessesError(error));
+	            return dispatch(
+	                fetchFewestGuessesSuccess(guessList)
+	            );
+	        })
+	        .catch(function(error) {
+	            return dispatch(
+	                fetchFewestGuessesError(error)
+	            );
 	        });
 	    };
 	};
-	
-	var postGuesses = function postGuesses(count) {
-	    return function (dispatch) {
-	        $.post("/fewest-guesses/" + count).done(function (data) {
-	            console.log(data);
-	            return dispatch(postFewestGuessesSuccess(data));
-	        }).catch(function (error) {
-	            return dispatch(postFewestGuessesError(error));
-	        });
+
+	var postGuesses = function(count) {
+	  return function(dispatch) {
+	    $.post("/fewest-guesses/" + count)
+	      .done(function(data){
+	        console.log(data);
+	        return dispatch(
+	            postFewestGuessesSuccess(data)
+
+	        );
+	      })
+	      .catch(function(error){
+	        return dispatch(
+	            postFewestGuessesError(error)
+	        );
+	      });
 	    };
 	};
-	
+
 	exports.RESET_GAME = RESET_GAME;
 	exports.resetGame = resetGame;
 	exports.GUESS_NUM = GUESS_NUM;
@@ -23430,10 +23530,10 @@
 	exports.POST_FEWEST_GUESSES_ERROR = POST_FEWEST_GUESSES_ERROR;
 	exports.postFewestGuessesError = postFewestGuessesError;
 	exports.fetchGuesses = fetchGuesses;
-	exports.postGuesses = postGuesses;
+	exports.postGuesses = postGuesses;*/
 
 /***/ },
-/* 204 */
+/* 205 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -33657,128 +33757,6 @@
 	return jQuery;
 	} );
 
-
-/***/ },
-/* 205 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var React = __webpack_require__(1);
-	var connect = __webpack_require__(172).connect;
-	
-	var actions = __webpack_require__(203);
-	
-	var NewGameButton = React.createClass({
-	  displayName: 'NewGameButton',
-	
-	  newGame: function newGame() {
-	    this.props.dispatch(actions.resetGame());
-	  },
-	  render: function render() {
-	    return React.createElement(
-	      'div',
-	      { className: 'newGameButton' },
-	      React.createElement(
-	        'button',
-	        { type: 'submit', onClick: this.newGame },
-	        'Play Again!'
-	      )
-	    );
-	  }
-	});
-	
-	var Container = connect()(NewGameButton);
-	
-	module.exports = Container;
-
-/***/ },
-/* 206 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var React = __webpack_require__(1);
-	var connect = __webpack_require__(172).connect;
-	var store = __webpack_require__(200);
-	var actions = __webpack_require__(203);
-	
-	var GuessForm = React.createClass({
-	  displayName: 'GuessForm',
-	
-	  componentDidMount: function componentDidMount() {
-	    this.props.dispatch(actions.fetchGuesses());
-	  },
-	  generateForm: function generateForm(event) {
-	    event.preventDefault();
-	    this.props.dispatch(actions.guessNum(this.refs.guessNum.value));
-	    if (store.getState().feedback == 'You Won. Play again!') {
-	      this.props.dispatch(actions.postGuesses(store.getState().count));
-	    }
-	  },
-	  render: function render() {
-	    return React.createElement(
-	      'div',
-	      { className: 'guessForm' },
-	      React.createElement(
-	        'div',
-	        { id: 'fewestGuess' },
-	        React.createElement(
-	          'h3',
-	          null,
-	          'You\'ve solved this puzzle in ',
-	          this.props.fewestGuesses,
-	          ' guesses'
-	        )
-	      ),
-	      React.createElement(
-	        'form',
-	        { onSubmit: this.generateForm },
-	        React.createElement('input', { type: 'number', ref: 'guessNum' }),
-	        React.createElement(
-	          'button',
-	          { type: 'submit' },
-	          'Enter!'
-	        )
-	      ),
-	      React.createElement(
-	        'div',
-	        { id: 'feedback' },
-	        React.createElement(
-	          'h3',
-	          null,
-	          'Your Last Guess was: ',
-	          this.props.feedback
-	        )
-	      ),
-	      React.createElement(
-	        'div',
-	        { id: 'guessList' },
-	        React.createElement(
-	          'h3',
-	          null,
-	          'You have guessed:'
-	        ),
-	        React.createElement(
-	          'h3',
-	          null,
-	          this.props.guessList.join(", ")
-	        )
-	      )
-	    );
-	  }
-	});
-	
-	var mapStateToProps = function mapStateToProps(state, props) {
-	  return {
-	    feedback: state.feedback,
-	    guessList: state.guessList,
-	    fewestGuesses: state.fewestGuesses
-	  };
-	};
-	var Container = connect(mapStateToProps)(GuessForm);
-	
-	module.exports = Container;
 
 /***/ }
 /******/ ]);

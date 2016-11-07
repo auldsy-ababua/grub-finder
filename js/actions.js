@@ -1,6 +1,15 @@
 var $ = require("jquery")
 
-var GUESS_NUM = 'GUESS_NUM';
+var BUTTON_PRESS = 'BUTTON_PRESS';
+var buttonPress = function() {
+    return {
+        type: BUTTON_PRESS
+    };
+};
+
+exports.BUTTON_PRESS = BUTTON_PRESS;
+exports.buttonPress = buttonPress;
+/*var GUESS_NUM = 'GUESS_NUM';
 var guessNum = function(userGuess) {
     return {
         type: GUESS_NUM,
@@ -106,4 +115,4 @@ exports.postFewestGuessesSuccess = postFewestGuessesSuccess;
 exports.POST_FEWEST_GUESSES_ERROR = POST_FEWEST_GUESSES_ERROR;
 exports.postFewestGuessesError = postFewestGuessesError;
 exports.fetchGuesses = fetchGuesses;
-exports.postGuesses = postGuesses;
+exports.postGuesses = postGuesses;*/
