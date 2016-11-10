@@ -7,6 +7,8 @@ var Provider = require('react-redux').Provider;
 
 var store = require('./store');
 var HelloWorld = require('./hello-world');
+var RestaurantForm = require('./restaurant-form');
+var DisplayRecs = require('./display-recs');
 
 
 
@@ -14,7 +16,8 @@ var CapstoneApp = React.createClass({
     render: function() {
         return (
           <div>
-            <HelloWorld />
+            <RestaurantForm />
+            <DisplayRecs />
           </div>
         );
     }

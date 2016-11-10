@@ -1,12 +1,13 @@
 "use strict"
 
 var express = require('express');
+var unirest = require('unirest');
 var bodyParser = require('body-parser');
 var path = require('path');
 var jsonParser = bodyParser.json();
 
 
-var app = express();
+/*var app = express();
 
 
 
@@ -17,10 +18,9 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(jsonParser);
 
-var fewestGuesses = null;
-
-app.get('/fewest-guesses', jsonParser, function(req, res) {
-    res.status(200).json({guessList:fewestGuesses});
+unirest.get('https://api.yelp.com/v2/search?term='+kind+'&location='+zip
+, jsonParser, function(req, res) {
+    res.status(200).json({recommendations:fewestGuesses});
     console.log("reading", fewestGuesses);
 });
 
@@ -38,3 +38,4 @@ app.post('/fewest-guesses/:count', function(req, res) {
 
 app.listen(8080);
 exports.app = app;
+*/

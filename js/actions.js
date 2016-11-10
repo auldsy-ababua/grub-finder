@@ -1,4 +1,11 @@
-var $ = require("jquery")
+var $ = require("jquery");
+var fetch = require('isomorphic-fetch');
+import OAuthSimple from 'oauthsimple';
+
+var consumerKey = '2ycjVcXfdZOJ1WLCzf19iQ';
+var consumerSecret = 'gpLvAC71QtQJVbxK-Eq_yXykkqg';
+var token = '8uu9MvVHdkv-TE3Im88DXsrRMzzvk2kB';
+var tokenSecret = 'lmLosFTHQ5lK1qmGZnn6px6nv64';
 
 var BUTTON_PRESS = 'BUTTON_PRESS';
 var buttonPress = function() {
@@ -9,110 +16,70 @@ var buttonPress = function() {
 
 exports.BUTTON_PRESS = BUTTON_PRESS;
 exports.buttonPress = buttonPress;
-/*var GUESS_NUM = 'GUESS_NUM';
-var guessNum = function(userGuess) {
+
+var GET_RECOMMENDATIONS_SUCCESS = 'GET_RECOMMENDATIONS_SUCCESS';
+var getRecommendationsSuccess = function(recommendations) {
     return {
-        type: GUESS_NUM,
-        userGuess: userGuess
+        type: GET_RECOMMENDATIONS_SUCCESS,
+        recommendations: recommendations
     };
 };
 
-var RESET_GAME = 'RESET_GAME';
-var resetGame = function() {
-    return {
-        type: RESET_GAME
-    };
-};
+exports.GET_RECOMMENDATIONS_SUCCESS = GET_RECOMMENDATIONS_SUCCESS;
+exports.getRecommendationsSuccess = getRecommendationsSuccess;
 
-var FETCH_FEWEST_GUESSES_SUCCESS = 'FETCH_FEWEST_GUESSES_SUCCESS';
-var fetchFewestGuessesSuccess = function(fewestGuesses) {
+var GET_RECOMMENDATIONS_ERROR = 'GET_RECOMMENDATIONS_ERROR';
+var getRecommendationsError = function(error) {
     return {
-        type: FETCH_FEWEST_GUESSES_SUCCESS,
-        fewestGuesses: fewestGuesses
-    };
-};
-
-var FETCH_FEWEST_GUESSES_ERROR = 'FETCH_DESCRIPTION_ERROR';
-var fetchFewestGuessesError = function(error) {
-    return {
-        type: FETCH_FEWEST_GUESSES_ERROR,
+        type: GET_RECOMMENDATIONS_ERROR,
         error: error
     };
 };
 
-var POST_FEWEST_GUESSES_SUCCESS = 'POST_FEWEST_GUESSES_SUCCESS';
-var postFewestGuessesSuccess = function(fewestGuesses) {
-    return {
-        type: POST_FEWEST_GUESSES_SUCCESS,
-        fewestGuesses: fewestGuesses
-    };
-};
+exports.GET_RECOMMENDATIONS_ERROR = GET_RECOMMENDATIONS_ERROR;
+exports.getRecommendationsError = getRecommendationsError;
 
-var POST_FEWEST_GUESSES_ERROR = 'POST_DESCRIPTION_ERROR';
-var postFewestGuessesError = function(error) {
-    return {
-        type: POST_FEWEST_GUESSES_ERROR,
-        error: error
-    };
-};
-
-var fetchGuesses = function() {
+var getZipAndKind = function(zip, kind) {
     return function(dispatch) {
-        var url = '/fewest-guesses';
-        return fetch(url).then(function(response) {
+      var oauth = new OAuthSimple(consumerKey, tokenSecret);
+
+            var request = oauth.sign({
+              action: "GET",
+              path: "https://api.yelp.com/v2/search",
+              parameters: "term=" + kind + '&location=' + zip,
+              signatures: {api_key: consumerKey, shared_secret: consumerSecret, access_token: token,
+       access_secret: tokenSecret}
+     });
+        return fetch(request.signed_url, {
+          mode: "no-cors",
+          method: "GET",
+        })
+        .then(function(response) {
+
             if (response.status < 200 || response.status >= 300) {
-                var error = new Error(response.statusText);
-                error.response = response;
-                throw error;
+                var error = new Error(response.statusText)
+                error.response = response
+                //throw error;
             }
             return response;
         })
         .then(function(response) {
+
             return response.json();
         })
         .then(function(data) {
-            var guessList = data.guessList;
-            return dispatch(
-                fetchFewestGuessesSuccess(guessList)
+            var description = data.description;
+            console.log(data);
+            return dispatch (
+                getRecommendationsSuccess(data.businesses, zip, kind)
             );
         })
         .catch(function(error) {
             return dispatch(
-                fetchFewestGuessesError(error)
+                getRecommendationsError(error)
             );
         });
     };
 };
 
-var postGuesses = function(count) {
-  return function(dispatch) {
-    $.post("/fewest-guesses/" + count)
-      .done(function(data){
-        console.log(data);
-        return dispatch(
-            postFewestGuessesSuccess(data)
-
-        );
-      })
-      .catch(function(error){
-        return dispatch(
-            postFewestGuessesError(error)
-        );
-      });
-    };
-};
-
-exports.RESET_GAME = RESET_GAME;
-exports.resetGame = resetGame;
-exports.GUESS_NUM = GUESS_NUM;
-exports.guessNum = guessNum;
-exports.FETCH_FEWEST_GUESSES_SUCCESS = FETCH_FEWEST_GUESSES_SUCCESS;
-exports.fetchFewestGuessesSuccess = fetchFewestGuessesSuccess;
-exports.FETCH_FEWEST_GUESSES_ERROR = FETCH_FEWEST_GUESSES_ERROR;
-exports.fetchFewestGuessesError = fetchFewestGuessesError;
-exports.POST_FEWEST_GUESSES_SUCCESS = POST_FEWEST_GUESSES_SUCCESS;
-exports.postFewestGuessesSuccess = postFewestGuessesSuccess;
-exports.POST_FEWEST_GUESSES_ERROR = POST_FEWEST_GUESSES_ERROR;
-exports.postFewestGuessesError = postFewestGuessesError;
-exports.fetchGuesses = fetchGuesses;
-exports.postGuesses = postGuesses;*/
+exports.getZipAndKind = getZipAndKind;

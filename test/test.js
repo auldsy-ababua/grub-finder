@@ -4,7 +4,7 @@ var should = require('chai').should();
 
 var HelloWorld = require('../js/hello-world').HelloWorld;
 describe('hello world component', function() {
-  it('Renders the button and hellow world text', function () {
+  it('Renders the button and hello world text', function () {
 
     var renderer = TestUtils.createRenderer();
     renderer.render(<HelloWorld />);

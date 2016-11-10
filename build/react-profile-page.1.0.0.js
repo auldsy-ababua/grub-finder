@@ -52,7 +52,9 @@
 	var Provider = __webpack_require__(172).Provider;
 	
 	var store = __webpack_require__(200);
-	var HelloWorld = __webpack_require__(203);
+	var HelloWorld = __webpack_require__(208);
+	var RestaurantForm = __webpack_require__(209);
+	var DisplayRecs = __webpack_require__(210);
 	
 	var CapstoneApp = React.createClass({
 	    displayName: 'CapstoneApp',
@@ -61,7 +63,8 @@
 	        return React.createElement(
 	            'div',
 	            null,
-	            React.createElement(HelloWorld, null)
+	            React.createElement(RestaurantForm, null),
+	            React.createElement(DisplayRecs, null)
 	        );
 	    }
 	});
@@ -23231,125 +23234,39 @@
 
 	'use strict';
 	
-	var actions = __webpack_require__(204);
+	var actions = __webpack_require__(203);
 	
 	var initialState = {
 	    type: null,
-	    showMessage: false
+	    showMessage: false,
+	    zip: null,
+	    kind: null,
+	    recommendations: null
 	};
 	
 	var capstoneApp = function capstoneApp(state, action) {
+	    var recommendations;
 	    var newState = Object.assign({}, state);
 	    if (action.type === 'BUTTON_PRESS') {
 	        newState.showMessage = !newState.showMessage;
+	    } else if (action.type === actions.GET_RECOMMENDATIONS_SUCCESS) {
+	        newState = Object.assign({}, state, {
+	            recommendations: action.recommendations,
+	            zip: action.zip,
+	            kind: action.kind
+	        });
+	        console.log(action.recommendations);
+	        return newState;
+	    } else if (action.type === actions.GET_RECOMMENDATIONS_ERROR) {
+	
+	        newState = Object.assign({}, state, {
+	            error: actions.error
+	        });
+	        return newState;
 	    }
+	
 	    return newState;
 	};
-	
-	/*var generateNumber = function() {
-	    var secretNumber = Math.floor(Math.random() * 100) + 1;
-	    return secretNumber;
-	};
-	
-	var initialRepositoryState = {
-	  type: null,
-	  randomNum: generateNumber(),
-	  userGuess: null,
-	  guessList: [],
-	  fewestGuesses: null,
-	  count: 0,
-	  feedback: ""
-	};
-	
-	var winner = function(){
-	    userFeedback = 'You Won. Click new game to play again';
-	};
-	
-	var repositoryReducer = function(state, action) {
-	    state = state || initialRepositoryState;
-	
-	
-	    if (action.type === actions.RESET_GAME) {
-	        var leastGuesses = state.fewestGuesses;
-	        state = initialRepositoryState;
-	        var randNum = generateNumber();
-	        state = Object.assign({}, state, {
-	          randomNum: randNum,
-	          fewestGuesses: leastGuesses
-	        });
-	        console.log(state);
-	        return state;
-	    }
-	    else if (action.type === actions.GUESS_NUM) {
-	      state.userGuess = action.userGuess;
-	      var guessList = state.guessList;
-	      var count = state.guessList.length;
-	      var filterGuess = state.guessList.filter(function(value){
-	        return value == state.userGuess;
-	      });
-	      if (filterGuess.length > 0) {
-	        state.feedback = "You've already guessed that!";
-	      }
-	      else {
-	        guessList = state.guessList.concat(action.userGuess);
-	        count = state.guessList.length;
-	        if(state.userGuess == state.randomNum){
-	            state.feedback = 'You Won. Play again!';
-	            actions.postGuesses(count);
-	        } else if(Math.abs(state.randomNum - state.userGuess) < 10){
-	            state.feedback = 'Hot';
-	        } else if(Math.abs(state.randomNum - state.userGuess) < 20 && Math.abs(state.randomNum - state.userGuess) > 9){
-	            state.feedback = 'Kinda hot';
-	        } else if(Math.abs(state.randomNum - state.userGuess) < 30 && Math.abs(state.randomNum - state.userGuess) > 19){
-	            state.feedback = 'Less than warm';
-	        } else {
-	            state.feedback = 'Cold';
-	        }
-	
-	        console.log("this is your count" + count);
-	      }
-	
-	      return Object.assign({}, state, {
-	        count: guessList.length,
-	        feedback: state.feedback,
-	        guessList: guessList
-	      });
-	
-	    }
-	
-	    else if (action.type === actions.FETCH_FEWEST_GUESSES_SUCCESS) {
-	            var newState = Object.assign({}, state, {
-	                fewestGuesses: action.fewestGuesses
-	            });
-	            return newState;
-	        }
-	
-	    else if (action.type === actions.FETCH_FEWEST_GUESSES_ERROR && state.guessList.length > 0) {
-	            return Object.assign({}, state, {
-	                feedback: "Internal server error"
-	            });
-	        }
-	    else if (action.type === actions.POST_FEWEST_GUESSES_SUCCESS) {
-	      console.log(state.guessList.length);
-	      console.log(action.fewestGuesses);
-	            if (state.guessList.length == action.fewestGuesses) {
-	              alert("your new high score is " + action.fewestGuesses);
-	            }
-	            var newState = Object.assign({}, state, {
-	                fewestGuesses: action.fewestGuesses
-	            });
-	            return newState;
-	        }
-	
-	    else if (action.type === actions.POST_FEWEST_GUESSES_ERROR) {
-	            return Object.assign({}, state, {
-	                feedback: "Internal server error"
-	            });
-	        }
-	    console.log(state);
-	    return state;
-	};
-	*/
 	
 	exports.capstoneApp = capstoneApp;
 
@@ -23359,61 +23276,20 @@
 
 	'use strict';
 	
-	var React = __webpack_require__(1);
-	var connect = __webpack_require__(172).connect;
-	var store = __webpack_require__(200);
-	var actions = __webpack_require__(204);
+	var _oauthsimple = __webpack_require__(204);
 	
-	var HelloWorld = React.createClass({
-	  displayName: 'HelloWorld',
+	var _oauthsimple2 = _interopRequireDefault(_oauthsimple);
 	
-	  buttonPress: function buttonPress() {
-	    this.props.dispatch(actions.buttonPress());
-	  },
-	  render: function render() {
-	    var message = void 0;
-	    if (this.props.showMessage == true) {
-	      message = React.createElement(
-	        'h1',
-	        null,
-	        'hello world'
-	      );
-	    }
-	    return React.createElement(
-	      'div',
-	      { className: 'HelloWorld' },
-	      React.createElement(
-	        'button',
-	        { type: 'submit', onClick: this.buttonPress },
-	        'Click here!'
-	      ),
-	      React.createElement(
-	        'div',
-	        { id: 'helloDiv' },
-	        message
-	      )
-	    );
-	  }
-	});
-	
-	var mapStateToProps = function mapStateToProps(state, props) {
-	  return {
-	    showMessage: state.showMessage
-	  };
-	};
-	
-	var Container = connect(mapStateToProps)(HelloWorld);
-	
-	module.exports = Container;
-	module.exports.HelloWorld = HelloWorld;
-
-/***/ },
-/* 204 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var $ = __webpack_require__(205);
+	var fetch = __webpack_require__(206);
+	
+	
+	var consumerKey = '2ycjVcXfdZOJ1WLCzf19iQ';
+	var consumerSecret = 'gpLvAC71QtQJVbxK-Eq_yXykkqg';
+	var token = '8uu9MvVHdkv-TE3Im88DXsrRMzzvk2kB';
+	var tokenSecret = 'lmLosFTHQ5lK1qmGZnn6px6nv64';
 	
 	var BUTTON_PRESS = 'BUTTON_PRESS';
 	var buttonPress = function buttonPress() {
@@ -23424,113 +23300,555 @@
 	
 	exports.BUTTON_PRESS = BUTTON_PRESS;
 	exports.buttonPress = buttonPress;
-	/*var GUESS_NUM = 'GUESS_NUM';
-	var guessNum = function(userGuess) {
+	
+	var GET_RECOMMENDATIONS_SUCCESS = 'GET_RECOMMENDATIONS_SUCCESS';
+	var getRecommendationsSuccess = function getRecommendationsSuccess(recommendations) {
 	    return {
-	        type: GUESS_NUM,
-	        userGuess: userGuess
+	        type: GET_RECOMMENDATIONS_SUCCESS,
+	        recommendations: recommendations
 	    };
 	};
-
-	var RESET_GAME = 'RESET_GAME';
-	var resetGame = function() {
+	
+	exports.GET_RECOMMENDATIONS_SUCCESS = GET_RECOMMENDATIONS_SUCCESS;
+	exports.getRecommendationsSuccess = getRecommendationsSuccess;
+	
+	var GET_RECOMMENDATIONS_ERROR = 'GET_RECOMMENDATIONS_ERROR';
+	var getRecommendationsError = function getRecommendationsError(error) {
 	    return {
-	        type: RESET_GAME
-	    };
-	};
-
-	var FETCH_FEWEST_GUESSES_SUCCESS = 'FETCH_FEWEST_GUESSES_SUCCESS';
-	var fetchFewestGuessesSuccess = function(fewestGuesses) {
-	    return {
-	        type: FETCH_FEWEST_GUESSES_SUCCESS,
-	        fewestGuesses: fewestGuesses
-	    };
-	};
-
-	var FETCH_FEWEST_GUESSES_ERROR = 'FETCH_DESCRIPTION_ERROR';
-	var fetchFewestGuessesError = function(error) {
-	    return {
-	        type: FETCH_FEWEST_GUESSES_ERROR,
+	        type: GET_RECOMMENDATIONS_ERROR,
 	        error: error
 	    };
 	};
-
-	var POST_FEWEST_GUESSES_SUCCESS = 'POST_FEWEST_GUESSES_SUCCESS';
-	var postFewestGuessesSuccess = function(fewestGuesses) {
-	    return {
-	        type: POST_FEWEST_GUESSES_SUCCESS,
-	        fewestGuesses: fewestGuesses
-	    };
-	};
-
-	var POST_FEWEST_GUESSES_ERROR = 'POST_DESCRIPTION_ERROR';
-	var postFewestGuessesError = function(error) {
-	    return {
-	        type: POST_FEWEST_GUESSES_ERROR,
-	        error: error
-	    };
-	};
-
-	var fetchGuesses = function() {
-	    return function(dispatch) {
-	        var url = '/fewest-guesses';
-	        return fetch(url).then(function(response) {
+	
+	exports.GET_RECOMMENDATIONS_ERROR = GET_RECOMMENDATIONS_ERROR;
+	exports.getRecommendationsError = getRecommendationsError;
+	
+	var getZipAndKind = function getZipAndKind(zip, kind) {
+	    return function (dispatch) {
+	        var oauth = new _oauthsimple2.default(consumerKey, tokenSecret);
+	
+	        var request = oauth.sign({
+	            action: "GET",
+	            path: "https://api.yelp.com/v2/search",
+	            parameters: "term=" + kind + '&location=' + zip,
+	            signatures: { api_key: consumerKey, shared_secret: consumerSecret, access_token: token,
+	                access_secret: tokenSecret }
+	        });
+	        return fetch(request.signed_url, {
+	            mode: "no-cors",
+	            method: "GET"
+	        }).then(function (response) {
+	
 	            if (response.status < 200 || response.status >= 300) {
 	                var error = new Error(response.statusText);
 	                error.response = response;
-	                throw error;
+	                //throw error;
 	            }
 	            return response;
-	        })
-	        .then(function(response) {
+	        }).then(function (response) {
+	
 	            return response.json();
-	        })
-	        .then(function(data) {
-	            var guessList = data.guessList;
-	            return dispatch(
-	                fetchFewestGuessesSuccess(guessList)
-	            );
-	        })
-	        .catch(function(error) {
-	            return dispatch(
-	                fetchFewestGuessesError(error)
-	            );
+	        }).then(function (data) {
+	            var description = data.description;
+	            console.log(data);
+	            return dispatch(getRecommendationsSuccess(data.businesses, zip, kind));
+	        }).catch(function (error) {
+	            return dispatch(getRecommendationsError(error));
 	        });
 	    };
 	};
+	
+	exports.getZipAndKind = getZipAndKind;
 
-	var postGuesses = function(count) {
-	  return function(dispatch) {
-	    $.post("/fewest-guesses/" + count)
-	      .done(function(data){
-	        console.log(data);
-	        return dispatch(
-	            postFewestGuessesSuccess(data)
+/***/ },
+/* 204 */
+/***/ function(module, exports, __webpack_require__) {
 
-	        );
-	      })
-	      .catch(function(error){
-	        return dispatch(
-	            postFewestGuessesError(error)
-	        );
-	      });
+	/* WEBPACK VAR INJECTION */(function(module) {/* OAuthSimple
+	  * A simpler version of OAuth
+	  *
+	  * author:     jr conlin
+	  * mail:       src@anticipatr.com
+	  * copyright:  unitedHeroes.net
+	  * version:    1.2
+	  * url:        http://unitedHeroes.net/OAuthSimple
+	  *
+	  * Copyright (c) 2011, unitedHeroes.net
+	  *
+	  * Redistribution and use in source and binary forms, with or without
+	  * modification, are permitted provided that the following conditions are met:
+	  *     * Redistributions of source code must retain the above copyright
+	  *       notice, this list of conditions and the following disclaimer.
+	  *     * Redistributions in binary form must reproduce the above copyright
+	  *       notice, this list of conditions and the following disclaimer in the
+	  *       documentation and/or other materials provided with the distribution.
+	  *     * Neither the name of the unitedHeroes.net nor the
+	  *       names of its contributors may be used to endorse or promote products
+	  *       derived from this software without specific prior written permission.
+	  *
+	  * THIS SOFTWARE IS PROVIDED BY UNITEDHEROES.NET ''AS IS'' AND ANY
+	  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+	  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+	  * DISCLAIMED. IN NO EVENT SHALL UNITEDHEROES.NET BE LIABLE FOR ANY
+	  * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+	  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+	  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+	  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+	  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+	  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+	 */
+	var OAuthSimple;
+	
+	if (OAuthSimple === undefined)
+	{
+	    /* Simple OAuth
+	     *
+	     * This class only builds the OAuth elements, it does not do the actual
+	     * transmission or reception of the tokens. It does not validate elements
+	     * of the token. It is for client use only.
+	     *
+	     * api_key is the API key, also known as the OAuth consumer key
+	     * shared_secret is the shared secret (duh).
+	     *
+	     * Both the api_key and shared_secret are generally provided by the site
+	     * offering OAuth services. You need to specify them at object creation
+	     * because nobody <explative>ing uses OAuth without that minimal set of
+	     * signatures.
+	     *
+	     * If you want to use the higher order security that comes from the
+	     * OAuth token (sorry, I don't provide the functions to fetch that because
+	     * sites aren't horribly consistent about how they offer that), you need to
+	     * pass those in either with .signatures() or as an argument to the
+	     * .sign() or .getHeaderString() functions.
+	     *
+	     * Example:
+	       <code>
+	        var oauthObject = OAuthSimple().sign({path:'http://example.com/rest/',
+	                                              parameters: 'foo=bar&gorp=banana',
+	                                              signatures:{
+	                                                api_key:'12345abcd',
+	                                                shared_secret:'xyz-5309'
+	                                             }});
+	        document.getElementById('someLink').href=oauthObject.signed_url;
+	       </code>
+	     *
+	     * that will sign as a "GET" using "SHA1-MAC" the url. If you need more than
+	     * that, read on, McDuff.
+	     */
+	
+	    /** OAuthSimple creator
+	     *
+	     * Create an instance of OAuthSimple
+	     *
+	     * @param api_key {string}       The API Key (sometimes referred to as the consumer key) This value is usually supplied by the site you wish to use.
+	     * @param shared_secret (string) The shared secret. This value is also usually provided by the site you wish to use.
+	     */
+	    OAuthSimple = function (consumer_key,shared_secret)
+	    {
+	/*        if (api_key == undefined)
+	            throw("Missing argument: api_key (oauth_consumer_key) for OAuthSimple. This is usually provided by the hosting site.");
+	        if (shared_secret == undefined)
+	            throw("Missing argument: shared_secret (shared secret) for OAuthSimple. This is usually provided by the hosting site.");
+	*/      var self = {};
+	        self._secrets={};
+	
+	
+	        // General configuration options.
+	        if (consumer_key !== undefined) {
+	            self._secrets['consumer_key'] = consumer_key;
+	            }
+	        if (shared_secret !== undefined) {
+	            self._secrets['shared_secret'] = shared_secret;
+	            }
+	        self._default_signature_method= "HMAC-SHA1";
+	        self._action = "GET";
+	        self._nonce_chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+	        self._parameters={};
+	
+	
+	        self.reset = function() {
+	            this._parameters={};
+	            this._path=undefined;
+	            this.sbs=undefined;
+	            return this;
+	        };
+	
+	        /** set the parameters either from a hash or a string
+	         *
+	         * @param {string,object} List of parameters for the call, this can either be a URI string (e.g. "foo=bar&gorp=banana" or an object/hash)
+	         */
+	        self.setParameters = function (parameters) {
+	            if (parameters === undefined) {
+	                parameters = {};
+	                }
+	            if (typeof(parameters) == 'string') {
+	                parameters=this._parseParameterString(parameters);
+	                }
+	            this._parameters = this._merge(parameters,this._parameters);
+	            if (this._parameters['oauth_nonce'] === undefined) {
+	                this._getNonce();
+	                }
+	            if (this._parameters['oauth_timestamp'] === undefined) {
+	                this._getTimestamp();
+	                }
+	            if (this._parameters['oauth_method'] === undefined) {
+	                this.setSignatureMethod();
+	                }
+	            if (this._parameters['oauth_consumer_key'] === undefined) {
+	                this._getApiKey();
+	                }
+	            if(this._parameters['oauth_token'] === undefined) {
+	                this._getAccessToken();
+	                }
+	            if(this._parameters['oauth_version'] === undefined) {
+	                this._parameters['oauth_version']=='1.0';
+	                }
+	
+	            return this;
+	        };
+	
+	        /** convienence method for setParameters
+	         *
+	         * @param parameters {string,object} See .setParameters
+	         */
+	        self.setQueryString = function (parameters) {
+	            return this.setParameters(parameters);
+	        };
+	
+	        /** Set the target URL (does not include the parameters)
+	         *
+	         * @param path {string} the fully qualified URI (excluding query arguments) (e.g "http://example.org/foo")
+	         */
+	        self.setURL = function (path) {
+	            if (path == '') {
+	                throw ('No path specified for OAuthSimple.setURL');
+	                }
+	            this._path = path;
+	            return this;
+	        };
+	
+	        /** convienence method for setURL
+	         *
+	         * @param path {string} see .setURL
+	         */
+	        self.setPath = function(path){
+	            return this.setURL(path);
+	        };
+	
+	        /** set the "action" for the url, (e.g. GET,POST, DELETE, etc.)
+	         *
+	         * @param action {string} HTTP Action word.
+	         */
+	        self.setAction = function(action) {
+	            if (action === undefined) {
+	                action="GET";
+	                }
+	            action = action.toUpperCase();
+	            if (action.match('[^A-Z]')) {
+	                throw ('Invalid action specified for OAuthSimple.setAction');
+	                }
+	            this._action = action;
+	            return this;
+	        };
+	
+	        /** set the signatures (as well as validate the ones you have)
+	         *
+	         * @param signatures {object} object/hash of the token/signature pairs {api_key:, shared_secret:, oauth_token: oauth_secret:}
+	         */
+	        self.signatures = function(signatures) {
+	            if (signatures)
+	            {
+	                this._secrets = this._merge(signatures,this._secrets);
+	            }
+	            // Aliases
+	            if (this._secrets['api_key']) {
+	                this._secrets.consumer_key = this._secrets.api_key;
+	                }
+	            if (this._secrets['access_token']) {
+	                this._secrets.oauth_token = this._secrets.access_token;
+	                }
+	            if (this._secrets['access_secret']) {
+	                this._secrets.oauth_secret = this._secrets.access_secret;
+	                }
+	            if (this._secrets['oauth_token_secret']) {
+	                this._secrets.oauth_secret = this._secrets.oauth_token_secret;
+	                }
+	            // Gauntlet
+	            if (this._secrets.consumer_key === undefined) {
+	                throw('Missing required consumer_key in OAuthSimple.signatures');
+	                }
+	            if (this._secrets.shared_secret === undefined) {
+	                throw('Missing required shared_secret in OAuthSimple.signatures');
+	                }
+	            if ((this._secrets.oauth_token !== undefined) && (this._secrets.oauth_secret === undefined)) {
+	                throw('Missing oauth_secret for supplied oauth_token in OAuthSimple.signatures');
+	                }
+	            return this;
+	        };
+	
+	        self.setTokensAndSecrets = function(signatures) {
+	            return this.signatures(signatures);
+	        };
+	
+	        /** set the signature method (currently only Plaintext or SHA-MAC1)
+	         *
+	         * @param method {string} Method of signing the transaction (only PLAINTEXT and SHA-MAC1 allowed for now)
+	         */
+	        self.setSignatureMethod = function(method) {
+	            if (method === undefined) {
+	                method = this._default_signature_method;
+	                }
+	            //TODO: accept things other than PlainText or SHA-MAC1
+	            if (method.toUpperCase().match(/(PLAINTEXT|HMAC-SHA1)/) === undefined) {
+	                throw ('Unknown signing method specified for OAuthSimple.setSignatureMethod');
+	                }
+	            this._parameters['oauth_signature_method']= method.toUpperCase();
+	            return this;
+	        };
+	
+	        /** sign the request
+	         *
+	         * note: all arguments are optional, provided you've set them using the
+	         * other helper functions.
+	         *
+	         * @param args {object} hash of arguments for the call
+	         *                   {action:, path:, parameters:, method:, signatures:}
+	         *                   all arguments are optional.
+	         */
+	        self.sign = function (args) {
+	            if (args === undefined) {
+	                args = {};
+	                }
+	            // Set any given parameters
+	            if(args['action'] !== undefined) {
+	                this.setAction(args['action']);
+	                }
+	            if (args['path'] !== undefined) {
+	                this.setPath(args['path']);
+	                }
+	            if (args['method'] !== undefined) {
+	                this.setSignatureMethod(args['method']);
+	                }
+	            this.signatures(args['signatures']);
+	            this.setParameters(args['parameters']);
+	            // check the parameters
+	            var normParams = this._normalizedParameters();
+	            this._parameters['oauth_signature']=this._generateSignature(normParams);
+	            return {
+	                parameters: this._parameters,
+	                signature: this._oauthEscape(this._parameters['oauth_signature']),
+	                signed_url: this._path + '?' + this._normalizedParameters(),
+	                header: this.getHeaderString()
+	            };
+	        };
+	
+	        /** Return a formatted "header" string
+	         *
+	         * NOTE: This doesn't set the "Authorization: " prefix, which is required.
+	         * I don't set it because various set header functions prefer different
+	         * ways to do that.
+	         *
+	         * @param args {object} see .sign
+	         */
+	        self.getHeaderString = function(args) {
+	            if (this._parameters['oauth_signature'] === undefined) {
+	                this.sign(args);
+	                }
+	
+	            var j,pName,pLength,result = 'OAuth ';
+	            for (pName in this._parameters)
+	            {
+	                if (pName.match(/^oauth/) === undefined) {
+	                    continue;
+	                    }
+	                if ((this._parameters[pName]) instanceof Array)
+	                {
+	                    pLength = this._parameters[pName].length;
+	                    for (j=0;j<pLength;j++)
+	                    {
+	                        result += pName +'="'+this._oauthEscape(this._parameters[pName][j])+'", ';
+	                    }
+	                }
+	                else
+	                {
+	                    result += pName + '="'+this._oauthEscape(this._parameters[pName])+'", ';
+	                }
+	            }
+	            return result.replace(/,\s+$/, '');
+	        };
+	
+	        // Start Private Methods.
+	
+	        /** convert the parameter string into a hash of objects.
+	         *
+	         */
+	        self._parseParameterString = function(paramString){
+	            var elements = paramString.split('&'),
+	                result={},
+	                element;
+	            for(element=elements.shift();element;element=elements.shift())
+	            {
+	                var keyToken=element.split('='),
+	                    value='';
+	                if (keyToken[1]) {
+	                    value=decodeURIComponent(keyToken[1]);
+	                    }
+	                if(result[keyToken[0]]){
+	                    if (!(result[keyToken[0]] instanceof Array))
+	                    {
+	                        result[keyToken[0]] = Array(result[keyToken[0]],value);
+	                    }
+	                    else
+	                    {
+	                        result[keyToken[0]].push(value);
+	                    }
+	                }
+	                else
+	                {
+	                    result[keyToken[0]]=value;
+	                }
+	            }
+	            return result;
+	        };
+	
+	        self._oauthEscape = function(string) {
+	            if (string === undefined) {
+	                return "";
+	                }
+	            if (string instanceof Array)
+	            {
+	                throw('Array passed to _oauthEscape');
+	            }
+	            return encodeURIComponent(string).replace(/\!/g, "%21").
+	            replace(/\*/g, "%2A").
+	            replace(/'/g, "%27").
+	            replace(/\(/g, "%28").
+	            replace(/\)/g, "%29");
+	        };
+	
+	        self._getNonce = function (length) {
+	            if (length === undefined) {
+	                length=5;
+	                }
+	            var result = "",
+	                i=0,
+	                rnum,
+	                cLength = this._nonce_chars.length;
+	            for (;i<length;i++) {
+	                rnum = Math.floor(Math.random()*cLength);
+	                result += this._nonce_chars.substring(rnum,rnum+1);
+	            }
+	            return this._parameters['oauth_nonce']=result;
+	        };
+	
+	        self._getApiKey = function() {
+	            if (this._secrets.consumer_key === undefined) {
+	                throw('No consumer_key set for OAuthSimple.');
+	                }
+	            return this._parameters['oauth_consumer_key']=this._secrets.consumer_key;
+	        };
+	
+	        self._getAccessToken = function() {
+	            if (this._secrets['oauth_secret'] === undefined) {
+	                return '';
+	                }
+	            if (this._secrets['oauth_token'] === undefined) {
+	                throw('No oauth_token (access_token) set for OAuthSimple.');
+	                }
+	            return this._parameters['oauth_token'] = this._secrets.oauth_token;
+	        };
+	
+	        self._getTimestamp = function() {
+	            var ts = Math.floor((new Date()).getTime()/1000);
+	            return this._parameters['oauth_timestamp'] = ts;
+	        };
+	
+	        self.b64_hmac_sha1 = function(k,d,_p,_z){
+	        // heavily optimized and compressed version of http://pajhome.org.uk/crypt/md5/sha1.js
+	        // _p = b64pad, _z = character size; not used here but I left them available just in case
+	        if(!_p){_p='=';}if(!_z){_z=8;}function _f(t,b,c,d){if(t<20){return(b&c)|((~b)&d);}if(t<40){return b^c^d;}if(t<60){return(b&c)|(b&d)|(c&d);}return b^c^d;}function _k(t){return(t<20)?1518500249:(t<40)?1859775393:(t<60)?-1894007588:-899497514;}function _s(x,y){var l=(x&0xFFFF)+(y&0xFFFF),m=(x>>16)+(y>>16)+(l>>16);return(m<<16)|(l&0xFFFF);}function _r(n,c){return(n<<c)|(n>>>(32-c));}function _c(x,l){x[l>>5]|=0x80<<(24-l%32);x[((l+64>>9)<<4)+15]=l;var w=[80],a=1732584193,b=-271733879,c=-1732584194,d=271733878,e=-1009589776;for(var i=0;i<x.length;i+=16){var o=a,p=b,q=c,r=d,s=e;for(var j=0;j<80;j++){if(j<16){w[j]=x[i+j];}else{w[j]=_r(w[j-3]^w[j-8]^w[j-14]^w[j-16],1);}var t=_s(_s(_r(a,5),_f(j,b,c,d)),_s(_s(e,w[j]),_k(j)));e=d;d=c;c=_r(b,30);b=a;a=t;}a=_s(a,o);b=_s(b,p);c=_s(c,q);d=_s(d,r);e=_s(e,s);}return[a,b,c,d,e];}function _b(s){var b=[],m=(1<<_z)-1;for(var i=0;i<s.length*_z;i+=_z){b[i>>5]|=(s.charCodeAt(i/8)&m)<<(32-_z-i%32);}return b;}function _h(k,d){var b=_b(k);if(b.length>16){b=_c(b,k.length*_z);}var p=[16],o=[16];for(var i=0;i<16;i++){p[i]=b[i]^0x36363636;o[i]=b[i]^0x5C5C5C5C;}var h=_c(p.concat(_b(d)),512+d.length*_z);return _c(o.concat(h),512+160);}function _n(b){var t="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/",s='';for(var i=0;i<b.length*4;i+=3){var r=(((b[i>>2]>>8*(3-i%4))&0xFF)<<16)|(((b[i+1>>2]>>8*(3-(i+1)%4))&0xFF)<<8)|((b[i+2>>2]>>8*(3-(i+2)%4))&0xFF);for(var j=0;j<4;j++){if(i*8+j*6>b.length*32){s+=_p;}else{s+=t.charAt((r>>6*(3-j))&0x3F);}}}return s;}function _x(k,d){return _n(_h(k,d));}return _x(k,d);
+	        }
+	
+	
+	        self._normalizedParameters = function() {
+	            var elements = new Array(),
+	                paramNames = [],
+	                i=0,
+	                ra =0;
+	            for (var paramName in this._parameters)
+	            {
+	                if (ra++ > 1000) {
+	                    throw('runaway 1');
+	                    }
+	                paramNames.unshift(paramName);
+	            }
+	            paramNames = paramNames.sort();
+	            pLen = paramNames.length;
+	            for (;i<pLen; i++)
+	            {
+	                paramName=paramNames[i];
+	                //skip secrets.
+	                if (paramName.match(/\w+_secret/)) {
+	                    continue;
+	                    }
+	                if (this._parameters[paramName] instanceof Array)
+	                {
+	                    var sorted = this._parameters[paramName].sort(),
+	                        spLen = sorted.length,
+	                        j=0;
+	                    for (;j<spLen;j++){
+	                        if (ra++ > 1000) {
+	                            throw('runaway 1');
+	                            }
+	                        elements.push(this._oauthEscape(paramName) + '=' +
+	                                  this._oauthEscape(sorted[j]));
+	                    }
+	                    continue;
+	                }
+	                elements.push(this._oauthEscape(paramName) + '=' +
+	                              this._oauthEscape(this._parameters[paramName]));
+	            }
+	            return elements.join('&');
+	        };
+	
+	        self._generateSignature = function() {
+	
+	            var secretKey = this._oauthEscape(this._secrets.shared_secret)+'&'+
+	                this._oauthEscape(this._secrets.oauth_secret);
+	            if (this._parameters['oauth_signature_method'] == 'PLAINTEXT')
+	            {
+	                return secretKey;
+	            }
+	            if (this._parameters['oauth_signature_method'] == 'HMAC-SHA1')
+	            {
+	                var sigString = this._oauthEscape(this._action)+'&'+this._oauthEscape(this._path)+'&'+this._oauthEscape(this._normalizedParameters());
+	                return this.b64_hmac_sha1(secretKey,sigString);
+	            }
+	            return null;
+	        };
+	
+	        self._merge = function(source,target) {
+	            if (source == undefined)
+	                source = {};
+	            if (target == undefined)
+	                target = {};
+	            for (var key in source) {
+	                target[key] = source[key];
+	            }
+	            return target;
+	        }
+	
+	    return self;
 	    };
-	};
-
-	exports.RESET_GAME = RESET_GAME;
-	exports.resetGame = resetGame;
-	exports.GUESS_NUM = GUESS_NUM;
-	exports.guessNum = guessNum;
-	exports.FETCH_FEWEST_GUESSES_SUCCESS = FETCH_FEWEST_GUESSES_SUCCESS;
-	exports.fetchFewestGuessesSuccess = fetchFewestGuessesSuccess;
-	exports.FETCH_FEWEST_GUESSES_ERROR = FETCH_FEWEST_GUESSES_ERROR;
-	exports.fetchFewestGuessesError = fetchFewestGuessesError;
-	exports.POST_FEWEST_GUESSES_SUCCESS = POST_FEWEST_GUESSES_SUCCESS;
-	exports.postFewestGuessesSuccess = postFewestGuessesSuccess;
-	exports.POST_FEWEST_GUESSES_ERROR = POST_FEWEST_GUESSES_ERROR;
-	exports.postFewestGuessesError = postFewestGuessesError;
-	exports.fetchGuesses = fetchGuesses;
-	exports.postGuesses = postGuesses;*/
+	}
+	
+	
+	// CommonJS Support
+	if (module && exports) {
+	    module.exports = OAuthSimple;
+	}
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(187)(module)))
 
 /***/ },
 /* 205 */
@@ -33757,6 +34075,604 @@
 	return jQuery;
 	} );
 
+
+/***/ },
+/* 206 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// the whatwg-fetch polyfill installs the fetch() function
+	// on the global object (window or self)
+	//
+	// Return that as the export for use in Webpack, Browserify etc.
+	__webpack_require__(207);
+	module.exports = self.fetch.bind(self);
+
+
+/***/ },
+/* 207 */
+/***/ function(module, exports) {
+
+	(function(self) {
+	  'use strict';
+	
+	  if (self.fetch) {
+	    return
+	  }
+	
+	  var support = {
+	    searchParams: 'URLSearchParams' in self,
+	    iterable: 'Symbol' in self && 'iterator' in Symbol,
+	    blob: 'FileReader' in self && 'Blob' in self && (function() {
+	      try {
+	        new Blob()
+	        return true
+	      } catch(e) {
+	        return false
+	      }
+	    })(),
+	    formData: 'FormData' in self,
+	    arrayBuffer: 'ArrayBuffer' in self
+	  }
+	
+	  function normalizeName(name) {
+	    if (typeof name !== 'string') {
+	      name = String(name)
+	    }
+	    if (/[^a-z0-9\-#$%&'*+.\^_`|~]/i.test(name)) {
+	      throw new TypeError('Invalid character in header field name')
+	    }
+	    return name.toLowerCase()
+	  }
+	
+	  function normalizeValue(value) {
+	    if (typeof value !== 'string') {
+	      value = String(value)
+	    }
+	    return value
+	  }
+	
+	  // Build a destructive iterator for the value list
+	  function iteratorFor(items) {
+	    var iterator = {
+	      next: function() {
+	        var value = items.shift()
+	        return {done: value === undefined, value: value}
+	      }
+	    }
+	
+	    if (support.iterable) {
+	      iterator[Symbol.iterator] = function() {
+	        return iterator
+	      }
+	    }
+	
+	    return iterator
+	  }
+	
+	  function Headers(headers) {
+	    this.map = {}
+	
+	    if (headers instanceof Headers) {
+	      headers.forEach(function(value, name) {
+	        this.append(name, value)
+	      }, this)
+	
+	    } else if (headers) {
+	      Object.getOwnPropertyNames(headers).forEach(function(name) {
+	        this.append(name, headers[name])
+	      }, this)
+	    }
+	  }
+	
+	  Headers.prototype.append = function(name, value) {
+	    name = normalizeName(name)
+	    value = normalizeValue(value)
+	    var list = this.map[name]
+	    if (!list) {
+	      list = []
+	      this.map[name] = list
+	    }
+	    list.push(value)
+	  }
+	
+	  Headers.prototype['delete'] = function(name) {
+	    delete this.map[normalizeName(name)]
+	  }
+	
+	  Headers.prototype.get = function(name) {
+	    var values = this.map[normalizeName(name)]
+	    return values ? values[0] : null
+	  }
+	
+	  Headers.prototype.getAll = function(name) {
+	    return this.map[normalizeName(name)] || []
+	  }
+	
+	  Headers.prototype.has = function(name) {
+	    return this.map.hasOwnProperty(normalizeName(name))
+	  }
+	
+	  Headers.prototype.set = function(name, value) {
+	    this.map[normalizeName(name)] = [normalizeValue(value)]
+	  }
+	
+	  Headers.prototype.forEach = function(callback, thisArg) {
+	    Object.getOwnPropertyNames(this.map).forEach(function(name) {
+	      this.map[name].forEach(function(value) {
+	        callback.call(thisArg, value, name, this)
+	      }, this)
+	    }, this)
+	  }
+	
+	  Headers.prototype.keys = function() {
+	    var items = []
+	    this.forEach(function(value, name) { items.push(name) })
+	    return iteratorFor(items)
+	  }
+	
+	  Headers.prototype.values = function() {
+	    var items = []
+	    this.forEach(function(value) { items.push(value) })
+	    return iteratorFor(items)
+	  }
+	
+	  Headers.prototype.entries = function() {
+	    var items = []
+	    this.forEach(function(value, name) { items.push([name, value]) })
+	    return iteratorFor(items)
+	  }
+	
+	  if (support.iterable) {
+	    Headers.prototype[Symbol.iterator] = Headers.prototype.entries
+	  }
+	
+	  function consumed(body) {
+	    if (body.bodyUsed) {
+	      return Promise.reject(new TypeError('Already read'))
+	    }
+	    body.bodyUsed = true
+	  }
+	
+	  function fileReaderReady(reader) {
+	    return new Promise(function(resolve, reject) {
+	      reader.onload = function() {
+	        resolve(reader.result)
+	      }
+	      reader.onerror = function() {
+	        reject(reader.error)
+	      }
+	    })
+	  }
+	
+	  function readBlobAsArrayBuffer(blob) {
+	    var reader = new FileReader()
+	    reader.readAsArrayBuffer(blob)
+	    return fileReaderReady(reader)
+	  }
+	
+	  function readBlobAsText(blob) {
+	    var reader = new FileReader()
+	    reader.readAsText(blob)
+	    return fileReaderReady(reader)
+	  }
+	
+	  function Body() {
+	    this.bodyUsed = false
+	
+	    this._initBody = function(body) {
+	      this._bodyInit = body
+	      if (typeof body === 'string') {
+	        this._bodyText = body
+	      } else if (support.blob && Blob.prototype.isPrototypeOf(body)) {
+	        this._bodyBlob = body
+	      } else if (support.formData && FormData.prototype.isPrototypeOf(body)) {
+	        this._bodyFormData = body
+	      } else if (support.searchParams && URLSearchParams.prototype.isPrototypeOf(body)) {
+	        this._bodyText = body.toString()
+	      } else if (!body) {
+	        this._bodyText = ''
+	      } else if (support.arrayBuffer && ArrayBuffer.prototype.isPrototypeOf(body)) {
+	        // Only support ArrayBuffers for POST method.
+	        // Receiving ArrayBuffers happens via Blobs, instead.
+	      } else {
+	        throw new Error('unsupported BodyInit type')
+	      }
+	
+	      if (!this.headers.get('content-type')) {
+	        if (typeof body === 'string') {
+	          this.headers.set('content-type', 'text/plain;charset=UTF-8')
+	        } else if (this._bodyBlob && this._bodyBlob.type) {
+	          this.headers.set('content-type', this._bodyBlob.type)
+	        } else if (support.searchParams && URLSearchParams.prototype.isPrototypeOf(body)) {
+	          this.headers.set('content-type', 'application/x-www-form-urlencoded;charset=UTF-8')
+	        }
+	      }
+	    }
+	
+	    if (support.blob) {
+	      this.blob = function() {
+	        var rejected = consumed(this)
+	        if (rejected) {
+	          return rejected
+	        }
+	
+	        if (this._bodyBlob) {
+	          return Promise.resolve(this._bodyBlob)
+	        } else if (this._bodyFormData) {
+	          throw new Error('could not read FormData body as blob')
+	        } else {
+	          return Promise.resolve(new Blob([this._bodyText]))
+	        }
+	      }
+	
+	      this.arrayBuffer = function() {
+	        return this.blob().then(readBlobAsArrayBuffer)
+	      }
+	
+	      this.text = function() {
+	        var rejected = consumed(this)
+	        if (rejected) {
+	          return rejected
+	        }
+	
+	        if (this._bodyBlob) {
+	          return readBlobAsText(this._bodyBlob)
+	        } else if (this._bodyFormData) {
+	          throw new Error('could not read FormData body as text')
+	        } else {
+	          return Promise.resolve(this._bodyText)
+	        }
+	      }
+	    } else {
+	      this.text = function() {
+	        var rejected = consumed(this)
+	        return rejected ? rejected : Promise.resolve(this._bodyText)
+	      }
+	    }
+	
+	    if (support.formData) {
+	      this.formData = function() {
+	        return this.text().then(decode)
+	      }
+	    }
+	
+	    this.json = function() {
+	      return this.text().then(JSON.parse)
+	    }
+	
+	    return this
+	  }
+	
+	  // HTTP methods whose capitalization should be normalized
+	  var methods = ['DELETE', 'GET', 'HEAD', 'OPTIONS', 'POST', 'PUT']
+	
+	  function normalizeMethod(method) {
+	    var upcased = method.toUpperCase()
+	    return (methods.indexOf(upcased) > -1) ? upcased : method
+	  }
+	
+	  function Request(input, options) {
+	    options = options || {}
+	    var body = options.body
+	    if (Request.prototype.isPrototypeOf(input)) {
+	      if (input.bodyUsed) {
+	        throw new TypeError('Already read')
+	      }
+	      this.url = input.url
+	      this.credentials = input.credentials
+	      if (!options.headers) {
+	        this.headers = new Headers(input.headers)
+	      }
+	      this.method = input.method
+	      this.mode = input.mode
+	      if (!body) {
+	        body = input._bodyInit
+	        input.bodyUsed = true
+	      }
+	    } else {
+	      this.url = input
+	    }
+	
+	    this.credentials = options.credentials || this.credentials || 'omit'
+	    if (options.headers || !this.headers) {
+	      this.headers = new Headers(options.headers)
+	    }
+	    this.method = normalizeMethod(options.method || this.method || 'GET')
+	    this.mode = options.mode || this.mode || null
+	    this.referrer = null
+	
+	    if ((this.method === 'GET' || this.method === 'HEAD') && body) {
+	      throw new TypeError('Body not allowed for GET or HEAD requests')
+	    }
+	    this._initBody(body)
+	  }
+	
+	  Request.prototype.clone = function() {
+	    return new Request(this)
+	  }
+	
+	  function decode(body) {
+	    var form = new FormData()
+	    body.trim().split('&').forEach(function(bytes) {
+	      if (bytes) {
+	        var split = bytes.split('=')
+	        var name = split.shift().replace(/\+/g, ' ')
+	        var value = split.join('=').replace(/\+/g, ' ')
+	        form.append(decodeURIComponent(name), decodeURIComponent(value))
+	      }
+	    })
+	    return form
+	  }
+	
+	  function headers(xhr) {
+	    var head = new Headers()
+	    var pairs = (xhr.getAllResponseHeaders() || '').trim().split('\n')
+	    pairs.forEach(function(header) {
+	      var split = header.trim().split(':')
+	      var key = split.shift().trim()
+	      var value = split.join(':').trim()
+	      head.append(key, value)
+	    })
+	    return head
+	  }
+	
+	  Body.call(Request.prototype)
+	
+	  function Response(bodyInit, options) {
+	    if (!options) {
+	      options = {}
+	    }
+	
+	    this.type = 'default'
+	    this.status = options.status
+	    this.ok = this.status >= 200 && this.status < 300
+	    this.statusText = options.statusText
+	    this.headers = options.headers instanceof Headers ? options.headers : new Headers(options.headers)
+	    this.url = options.url || ''
+	    this._initBody(bodyInit)
+	  }
+	
+	  Body.call(Response.prototype)
+	
+	  Response.prototype.clone = function() {
+	    return new Response(this._bodyInit, {
+	      status: this.status,
+	      statusText: this.statusText,
+	      headers: new Headers(this.headers),
+	      url: this.url
+	    })
+	  }
+	
+	  Response.error = function() {
+	    var response = new Response(null, {status: 0, statusText: ''})
+	    response.type = 'error'
+	    return response
+	  }
+	
+	  var redirectStatuses = [301, 302, 303, 307, 308]
+	
+	  Response.redirect = function(url, status) {
+	    if (redirectStatuses.indexOf(status) === -1) {
+	      throw new RangeError('Invalid status code')
+	    }
+	
+	    return new Response(null, {status: status, headers: {location: url}})
+	  }
+	
+	  self.Headers = Headers
+	  self.Request = Request
+	  self.Response = Response
+	
+	  self.fetch = function(input, init) {
+	    return new Promise(function(resolve, reject) {
+	      var request
+	      if (Request.prototype.isPrototypeOf(input) && !init) {
+	        request = input
+	      } else {
+	        request = new Request(input, init)
+	      }
+	
+	      var xhr = new XMLHttpRequest()
+	
+	      function responseURL() {
+	        if ('responseURL' in xhr) {
+	          return xhr.responseURL
+	        }
+	
+	        // Avoid security warnings on getResponseHeader when not allowed by CORS
+	        if (/^X-Request-URL:/m.test(xhr.getAllResponseHeaders())) {
+	          return xhr.getResponseHeader('X-Request-URL')
+	        }
+	
+	        return
+	      }
+	
+	      xhr.onload = function() {
+	        var options = {
+	          status: xhr.status,
+	          statusText: xhr.statusText,
+	          headers: headers(xhr),
+	          url: responseURL()
+	        }
+	        var body = 'response' in xhr ? xhr.response : xhr.responseText
+	        resolve(new Response(body, options))
+	      }
+	
+	      xhr.onerror = function() {
+	        reject(new TypeError('Network request failed'))
+	      }
+	
+	      xhr.ontimeout = function() {
+	        reject(new TypeError('Network request failed'))
+	      }
+	
+	      xhr.open(request.method, request.url, true)
+	
+	      if (request.credentials === 'include') {
+	        xhr.withCredentials = true
+	      }
+	
+	      if ('responseType' in xhr && support.blob) {
+	        xhr.responseType = 'blob'
+	      }
+	
+	      request.headers.forEach(function(value, name) {
+	        xhr.setRequestHeader(name, value)
+	      })
+	
+	      xhr.send(typeof request._bodyInit === 'undefined' ? null : request._bodyInit)
+	    })
+	  }
+	  self.fetch.polyfill = true
+	})(typeof self !== 'undefined' ? self : this);
+
+
+/***/ },
+/* 208 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(1);
+	var connect = __webpack_require__(172).connect;
+	var store = __webpack_require__(200);
+	var actions = __webpack_require__(203);
+	
+	var HelloWorld = React.createClass({
+	  displayName: 'HelloWorld',
+	
+	  buttonPress: function buttonPress() {
+	    this.props.dispatch(actions.buttonPress());
+	  },
+	  render: function render() {
+	    var message = void 0;
+	    if (this.props.showMessage == true) {
+	      message = React.createElement(
+	        'h1',
+	        null,
+	        'hello world'
+	      );
+	    }
+	    return React.createElement(
+	      'div',
+	      { className: 'HelloWorld' },
+	      React.createElement(
+	        'button',
+	        { type: 'submit', onClick: this.buttonPress },
+	        'Click here!'
+	      ),
+	      React.createElement(
+	        'div',
+	        { id: 'helloDiv' },
+	        message
+	      )
+	    );
+	  }
+	});
+	
+	var mapStateToProps = function mapStateToProps(state, props) {
+	  return {
+	    showMessage: state.showMessage
+	  };
+	};
+	
+	var Container = connect(mapStateToProps)(HelloWorld);
+	
+	module.exports = Container;
+	module.exports.HelloWorld = HelloWorld;
+
+/***/ },
+/* 209 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(1);
+	var connect = __webpack_require__(172).connect;
+	var store = __webpack_require__(200);
+	var actions = __webpack_require__(203);
+	
+	var RestaurantForm = React.createClass({
+	  displayName: 'RestaurantForm',
+	
+	  getRecommendations: function getRecommendations(event) {
+	    event.preventDefault();
+	    this.props.dispatch(actions.getZipAndKind(this.refs.zip.value, this.refs.kind.value));
+	  },
+	  render: function render() {
+	    var results = void 0;
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'RestaurantForm' },
+	      React.createElement(
+	        'form',
+	        { onSubmit: this.getRecommendations, type: 'text' },
+	        React.createElement('input', { type: 'text', ref: 'zip' }),
+	        React.createElement('input', { type: 'text', ref: 'kind' }),
+	        React.createElement(
+	          'button',
+	          { type: 'submit' },
+	          'Get Results!'
+	        )
+	      )
+	    );
+	  }
+	});
+	
+	var mapStateToProps = function mapStateToProps(state, props) {
+	  return {
+	    error: state.error
+	  };
+	};
+	
+	var Container = connect(mapStateToProps)(RestaurantForm);
+	
+	module.exports = Container;
+	module.exports.RestaurantForm = RestaurantForm;
+
+/***/ },
+/* 210 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(1);
+	var connect = __webpack_require__(172).connect;
+	var store = __webpack_require__(200);
+	var actions = __webpack_require__(203);
+	
+	var DisplayRecs = React.createClass({
+	  displayName: 'DisplayRecs',
+	
+	  render: function render() {
+	    console.log(this.props.recommendations);
+	    return React.createElement(
+	      'div',
+	      { className: 'DisplayRecs' },
+	      React.createElement(
+	        'div',
+	        { id: 'recommendationList' },
+	        React.createElement(
+	          'h1',
+	          null,
+	          this.props.recommendations
+	        )
+	      )
+	    );
+	  }
+	});
+	
+	var mapStateToProps = function mapStateToProps(state, props) {
+	  return {
+	    recommendations: state.recommendations
+	  };
+	};
+	
+	var Container = connect(mapStateToProps)(DisplayRecs);
+	
+	module.exports = Container;
+	module.exports.DisplayRecs = DisplayRecs;
 
 /***/ }
 /******/ ]);
