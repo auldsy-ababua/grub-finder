@@ -18,6 +18,7 @@ var CapstoneApp = React.createClass({
           <div>
             <RestaurantForm />
             <DisplayRecs />
+
           </div>
         );
     }

@@ -23325,17 +23325,7 @@
 	
 	var getZipAndKind = function getZipAndKind(zip, kind) {
 	    return function (dispatch) {
-	        var oauth = new _oauthsimple2.default(consumerKey, tokenSecret);
-	
-	        var request = oauth.sign({
-	            action: "GET",
-	            path: "https://api.yelp.com/v2/search",
-	            parameters: "term=" + kind + '&location=' + zip,
-	            signatures: { api_key: consumerKey, shared_secret: consumerSecret, access_token: token,
-	                access_secret: tokenSecret }
-	        });
-	        return fetch(request.signed_url, {
-	            mode: "no-cors",
+	        return fetch("http://localhost:8080/recommendations/" + zip + "/" + kind, {
 	            method: "GET"
 	        }).then(function (response) {
 	
@@ -34608,11 +34598,11 @@
 	      React.createElement(
 	        'form',
 	        { onSubmit: this.getRecommendations, type: 'text' },
-	        React.createElement('input', { type: 'text', ref: 'zip' }),
-	        React.createElement('input', { type: 'text', ref: 'kind' }),
+	        React.createElement('input', { type: 'text', placeholder: 'Zip Code or City', ref: 'zip' }),
+	        React.createElement('input', { type: 'text', placeholder: 'Food Type', ref: 'kind' }),
 	        React.createElement(
 	          'button',
-	          { type: 'submit' },
+	          { id: 'button', type: 'submit' },
 	          'Get Results!'
 	        )
 	      )
@@ -34641,24 +34631,24 @@
 	var connect = __webpack_require__(172).connect;
 	var store = __webpack_require__(200);
 	var actions = __webpack_require__(203);
+	var Recommendations = __webpack_require__(211);
 	
 	var DisplayRecs = React.createClass({
 	  displayName: 'DisplayRecs',
 	
 	  render: function render() {
+	    var recsLoop = [];
+	
+	    if (this.props.recommendations) {
+	      for (var i = 0; i < this.props.recommendations.length; i++) {
+	        recsLoop.push(React.createElement(Recommendations, { recommendation: this.props.recommendations[i] }));
+	      }
+	    }
 	    console.log(this.props.recommendations);
 	    return React.createElement(
 	      'div',
 	      { className: 'DisplayRecs' },
-	      React.createElement(
-	        'div',
-	        { id: 'recommendationList' },
-	        React.createElement(
-	          'h1',
-	          null,
-	          this.props.recommendations
-	        )
-	      )
+	      recsLoop
 	    );
 	  }
 	});
@@ -34673,6 +34663,53 @@
 	
 	module.exports = Container;
 	module.exports.DisplayRecs = DisplayRecs;
+
+/***/ },
+/* 211 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(1);
+	var connect = __webpack_require__(172).connect;
+	var store = __webpack_require__(200);
+	var actions = __webpack_require__(203);
+	
+	var Recommendations = React.createClass({
+	  displayName: 'Recommendations',
+	
+	  render: function render() {
+	    React.createElement(
+	      'div',
+	      { id: 'bizData' },
+	      React.createElement(
+	        'div',
+	        { id: 'nameList' },
+	        this.props.recommendation.name
+	      ),
+	      React.createElement(
+	        'div',
+	        { id: 'phoneList' },
+	        this.props.recommendation.phone
+	      ),
+	      React.createElement(
+	        'div',
+	        { id: 'ratingList' },
+	        this.props.recommendation.rating
+	      )
+	    );
+	  }
+	});
+	var mapStateToProps = function mapStateToProps(state, props) {
+	  return {
+	    recommendations: state.recommendations
+	  };
+	};
+	
+	var Container = connect(mapStateToProps)(Recommendations);
+	
+	module.exports = Container;
+	module.exports.Recommendations = Recommendations;
 
 /***/ }
 /******/ ]);

@@ -41,24 +41,14 @@ exports.getRecommendationsError = getRecommendationsError;
 
 var getZipAndKind = function(zip, kind) {
     return function(dispatch) {
-      var oauth = new OAuthSimple(consumerKey, tokenSecret);
-
-            var request = oauth.sign({
-              action: "GET",
-              path: "https://api.yelp.com/v2/search",
-              parameters: "term=" + kind + '&location=' + zip,
-              signatures: {api_key: consumerKey, shared_secret: consumerSecret, access_token: token,
-       access_secret: tokenSecret}
-     });
-        return fetch(request.signed_url, {
-          mode: "no-cors",
-          method: "GET",
+        return fetch("http://localhost:8080/recommendations/" + zip + "/" + kind, {
+          method: "GET"
         })
         .then(function(response) {
 
             if (response.status < 200 || response.status >= 300) {
-                var error = new Error(response.statusText)
-                error.response = response
+                var error = new Error(response.statusText);
+                error.response = response;
                 //throw error;
             }
             return response;

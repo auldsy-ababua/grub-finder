@@ -14,9 +14,9 @@ var RestaurantForm = React.createClass({
     return (
       <div className="RestaurantForm">
         <form onSubmit={this.getRecommendations} type="text">
-          <input type="text" ref="zip"/>
-          <input type="text" ref="kind"/>
-          <button type="submit">Get Results!</button>
+          <input type="text" placeholder="Zip Code or City" ref="zip"/>
+          <input type="text" placeholder="Food Type" ref="kind"/>
+          <button id="button" type="submit">Get Results!</button>
         </form>
       </div>
     );
