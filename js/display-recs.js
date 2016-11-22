@@ -11,7 +11,7 @@ var DisplayRecs = React.createClass({
 
     if (this.props.recommendations) {
       for (var i=0; i < this.props.recommendations.length; i++) {
-        recsLoop.push(<Recommendations recommendation={this.props.recommendations[i]} />)
+        recsLoop.push(<Recommendations key={i} item={this.props.recommendations[i]} />)
       }
     }
     console.log(this.props.recommendations);

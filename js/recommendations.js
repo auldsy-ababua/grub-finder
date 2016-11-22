@@ -5,11 +5,13 @@ var actions = require('./actions');
 
 var Recommendations = React.createClass({
   render: function() {
-    <div id="bizData">
-      <div id='nameList'>{this.props.recommendation.name}</div>
-      <div id='phoneList'>{this.props.recommendation.phone}</div>
-      <div id='ratingList'>{this.props.recommendation.rating}</div>
-    </div>
+    return (
+      <div id="bizData">
+        <div id='nameList'>{this.props.item.name}</div>
+        <div id='phoneList'>{this.props.item.phone}</div>
+        <div id='ratingList'>{this.props.item.rating}</div>
+      </div>
+    )
   }
 });
 var mapStateToProps = function(state, props) {

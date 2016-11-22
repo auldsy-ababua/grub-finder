@@ -55,6 +55,7 @@
 	var HelloWorld = __webpack_require__(208);
 	var RestaurantForm = __webpack_require__(209);
 	var DisplayRecs = __webpack_require__(210);
+	var Footer = __webpack_require__(212);
 	
 	var CapstoneApp = React.createClass({
 	    displayName: 'CapstoneApp',
@@ -64,7 +65,8 @@
 	            'div',
 	            null,
 	            React.createElement(RestaurantForm, null),
-	            React.createElement(DisplayRecs, null)
+	            React.createElement(DisplayRecs, null),
+	            React.createElement(Footer, null)
 	        );
 	    }
 	});
@@ -34597,13 +34599,32 @@
 	      { className: 'RestaurantForm' },
 	      React.createElement(
 	        'form',
-	        { onSubmit: this.getRecommendations, type: 'text' },
-	        React.createElement('input', { type: 'text', placeholder: 'Zip Code or City', ref: 'zip' }),
-	        React.createElement('input', { type: 'text', placeholder: 'Food Type', ref: 'kind' }),
+	        { id: 'form', onSubmit: this.getRecommendations, type: 'text' },
+	        React.createElement('input', { id: 'zipInput', type: 'text', placeholder: 'Zip Code or City', ref: 'zip' }),
+	        React.createElement('input', { id: 'kindInput', type: 'text', placeholder: 'Food Type', ref: 'kind' }),
 	        React.createElement(
 	          'button',
 	          { id: 'button', type: 'submit' },
 	          'Get Results!'
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { id: 'container' },
+	        React.createElement(
+	          'h2',
+	          { 'class': 'header' },
+	          'Restaunt Name:'
+	        ),
+	        React.createElement(
+	          'h2',
+	          { 'class': 'header' },
+	          'Phone #:'
+	        ),
+	        React.createElement(
+	          'h2',
+	          { 'class': 'header' },
+	          'Star Rating:'
 	        )
 	      )
 	    );
@@ -34641,7 +34662,7 @@
 	
 	    if (this.props.recommendations) {
 	      for (var i = 0; i < this.props.recommendations.length; i++) {
-	        recsLoop.push(React.createElement(Recommendations, { recommendation: this.props.recommendations[i] }));
+	        recsLoop.push(React.createElement(Recommendations, { key: i, item: this.props.recommendations[i] }));
 	      }
 	    }
 	    console.log(this.props.recommendations);
@@ -34679,23 +34700,23 @@
 	  displayName: 'Recommendations',
 	
 	  render: function render() {
-	    React.createElement(
+	    return React.createElement(
 	      'div',
 	      { id: 'bizData' },
 	      React.createElement(
 	        'div',
 	        { id: 'nameList' },
-	        this.props.recommendation.name
+	        this.props.item.name
 	      ),
 	      React.createElement(
 	        'div',
 	        { id: 'phoneList' },
-	        this.props.recommendation.phone
+	        this.props.item.phone
 	      ),
 	      React.createElement(
 	        'div',
 	        { id: 'ratingList' },
-	        this.props.recommendation.rating
+	        this.props.item.rating
 	      )
 	    );
 	  }
@@ -34710,6 +34731,36 @@
 	
 	module.exports = Container;
 	module.exports.Recommendations = Recommendations;
+
+/***/ },
+/* 212 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(1);
+	var connect = __webpack_require__(172).connect;
+	var store = __webpack_require__(200);
+	var actions = __webpack_require__(203);
+	
+	var Footer = React.createClass({
+	  displayName: 'Footer',
+	
+	  render: function render() {
+	    return React.createElement('div', { className: 'Footer' });
+	  }
+	});
+	
+	var mapStateToProps = function mapStateToProps(state, props) {
+	  return {
+	    error: state.error
+	  };
+	};
+	
+	var Container = connect(mapStateToProps)(Footer);
+	
+	module.exports = Container;
+	module.exports.Footer = Footer;
 
 /***/ }
 /******/ ]);

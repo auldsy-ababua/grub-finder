@@ -9,7 +9,7 @@ var store = require('./store');
 var HelloWorld = require('./hello-world');
 var RestaurantForm = require('./restaurant-form');
 var DisplayRecs = require('./display-recs');
-
+var Footer = require('./footer');
 
 
 var CapstoneApp = React.createClass({
@@ -18,7 +18,7 @@ var CapstoneApp = React.createClass({
           <div>
             <RestaurantForm />
             <DisplayRecs />
-
+            <Footer />
           </div>
         );
     }
