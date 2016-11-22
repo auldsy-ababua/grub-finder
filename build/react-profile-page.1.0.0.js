@@ -34747,7 +34747,11 @@
 	  displayName: 'Footer',
 	
 	  render: function render() {
-	    return React.createElement('div', { className: 'Footer' });
+	    return React.createElement(
+	      'div',
+	      { className: 'Footer' },
+	      React.createElement('div', { id: 'footer' })
+	    );
 	  }
 	});
 	

@@ -12,6 +12,7 @@ var DisplayRecs = require('./display-recs');
 var Footer = require('./footer');
 
 
+
 var CapstoneApp = React.createClass({
     render: function() {
         return (
