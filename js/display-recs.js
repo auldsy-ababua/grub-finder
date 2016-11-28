@@ -14,9 +14,8 @@ var DisplayRecs = React.createClass({
         recsLoop.push(<Recommendations key={i} item={this.props.recommendations[i]} />)
       }
     }
-    console.log(this.props.recommendations);
     return (
-      <div className="DisplayRecs">
+      <div className="DisplayRecs row">
         {recsLoop}
       </div>
     );

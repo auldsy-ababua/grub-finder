@@ -10,13 +10,13 @@ var HelloWorld = require('./hello-world');
 var RestaurantForm = require('./restaurant-form');
 var DisplayRecs = require('./display-recs');
 var Footer = require('./footer');
-
-
+var Title = require('./title');
 
 var CapstoneApp = React.createClass({
     render: function() {
         return (
           <div>
+            <Title />
             <RestaurantForm />
             <DisplayRecs />
             <Footer />

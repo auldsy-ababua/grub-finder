@@ -13,16 +13,13 @@ var RestaurantForm = React.createClass({
 
     return (
       <div className="RestaurantForm">
-        <form id="form" onSubmit={this.getRecommendations} type="text">
-          <input id="zipInput" type="text" placeholder="Zip Code or City" ref="zip"/>
-          <input id="kindInput" type="text" placeholder="Food Type" ref="kind"/>
-          <button id="button" type="submit">Get Results!</button>
+        <form id="form" className="form-inline" onSubmit={this.getRecommendations} type="text">
+          <div className="form-group">
+            <input className="form-control" id="zipInput" type="text" placeholder="Zip Code or City" ref="zip" aria-describedby="basic-addon2"/>
+            <input className="form-control" id="kindInput" type="text" placeholder="Food Type" ref="kind"/>
+            <button id="button" className="btn btn-outline-secondary" type="submit">Get Results!</button>
+          </div>
         </form>
-        <div id="container">
-          <h2 class="header">Restaunt Name:</h2
-          ><h2 class="header">Phone #:</h2
-          ><h2 class="header">Star Rating:</h2>
-        </div>
       </div>
     );
   }

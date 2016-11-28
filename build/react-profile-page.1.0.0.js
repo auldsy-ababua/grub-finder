@@ -56,6 +56,7 @@
 	var RestaurantForm = __webpack_require__(209);
 	var DisplayRecs = __webpack_require__(210);
 	var Footer = __webpack_require__(212);
+	var Title = __webpack_require__(214);
 	
 	var CapstoneApp = React.createClass({
 	    displayName: 'CapstoneApp',
@@ -64,6 +65,7 @@
 	        return React.createElement(
 	            'div',
 	            null,
+	            React.createElement(Title, null),
 	            React.createElement(RestaurantForm, null),
 	            React.createElement(DisplayRecs, null),
 	            React.createElement(Footer, null)
@@ -34599,32 +34601,17 @@
 	      { className: 'RestaurantForm' },
 	      React.createElement(
 	        'form',
-	        { id: 'form', onSubmit: this.getRecommendations, type: 'text' },
-	        React.createElement('input', { id: 'zipInput', type: 'text', placeholder: 'Zip Code or City', ref: 'zip' }),
-	        React.createElement('input', { id: 'kindInput', type: 'text', placeholder: 'Food Type', ref: 'kind' }),
+	        { id: 'form', className: 'form-inline', onSubmit: this.getRecommendations, type: 'text' },
 	        React.createElement(
-	          'button',
-	          { id: 'button', type: 'submit' },
-	          'Get Results!'
-	        )
-	      ),
-	      React.createElement(
-	        'div',
-	        { id: 'container' },
-	        React.createElement(
-	          'h2',
-	          { 'class': 'header' },
-	          'Restaunt Name:'
-	        ),
-	        React.createElement(
-	          'h2',
-	          { 'class': 'header' },
-	          'Phone #:'
-	        ),
-	        React.createElement(
-	          'h2',
-	          { 'class': 'header' },
-	          'Star Rating:'
+	          'div',
+	          { className: 'form-group' },
+	          React.createElement('input', { className: 'form-control', id: 'zipInput', type: 'text', placeholder: 'Zip Code or City', ref: 'zip', 'aria-describedby': 'basic-addon2' }),
+	          React.createElement('input', { className: 'form-control', id: 'kindInput', type: 'text', placeholder: 'Food Type', ref: 'kind' }),
+	          React.createElement(
+	            'button',
+	            { id: 'button', className: 'btn btn-outline-secondary', type: 'submit' },
+	            'Get Results!'
+	          )
 	        )
 	      )
 	    );
@@ -34665,10 +34652,9 @@
 	        recsLoop.push(React.createElement(Recommendations, { key: i, item: this.props.recommendations[i] }));
 	      }
 	    }
-	    console.log(this.props.recommendations);
 	    return React.createElement(
 	      'div',
-	      { className: 'DisplayRecs' },
+	      { className: 'DisplayRecs row' },
 	      recsLoop
 	    );
 	  }
@@ -34699,24 +34685,48 @@
 	var Recommendations = React.createClass({
 	  displayName: 'Recommendations',
 	
+	
+	  truncate: function truncate() {
+	    var string = this.props.item.name;
+	    var length = 24;
+	    return string.length > length ? string.substring(0, length - 3) + "..." : string;
+	  },
+	
 	  render: function render() {
+	
+	    var restaurantName = this.truncate();
+	    console.log(restaurantName);
+	
 	    return React.createElement(
 	      'div',
-	      { id: 'bizData' },
+	      { className: 'card col-md-4' },
 	      React.createElement(
 	        'div',
-	        { id: 'nameList' },
-	        this.props.item.name
+	        { className: 'card-block' },
+	        React.createElement(
+	          'h5',
+	          { className: 'card-title' },
+	          restaurantName
+	        )
 	      ),
+	      React.createElement('img', { className: 'img', src: this.props.item.image_url, alt: 'Card image' }),
 	      React.createElement(
 	        'div',
-	        { id: 'phoneList' },
-	        this.props.item.phone
-	      ),
-	      React.createElement(
-	        'div',
-	        { id: 'ratingList' },
-	        this.props.item.rating
+	        { className: 'card-block' },
+	        React.createElement(
+	          'p',
+	          { className: 'card-text' },
+	          'This Restaurant has a ',
+	          this.props.item.rating,
+	          ' star rating. You can call this business at ',
+	          this.props.item.phone,
+	          '.'
+	        ),
+	        React.createElement(
+	          'a',
+	          { href: this.props.item.url, className: 'card-link' },
+	          'Yelp Page'
+	        )
 	      )
 	    );
 	  }
@@ -34750,7 +34760,63 @@
 	    return React.createElement(
 	      'div',
 	      { className: 'Footer' },
-	      React.createElement('div', { id: 'footer' })
+	      React.createElement(
+	        'h2',
+	        { id: 'footerHeader', className: 'fancy' },
+	        React.createElement(
+	          'span',
+	          null,
+	          'CONTACT THE DEVELOPER!'
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { id: 'social-media-outer' },
+	        React.createElement(
+	          'div',
+	          null,
+	          React.createElement(
+	            'ul',
+	            { className: 'row', id: 'horizontal-list' },
+	            React.createElement(
+	              'li',
+	              { className: 'col-md-3' },
+	              React.createElement(
+	                'a',
+	                { href: 'mailto:caulds989@gmail.com?Subject=Just%20viewed%20your%20portfolio' },
+	                React.createElement('img', { className: 'icon', src: 'images/email.png' })
+	              )
+	            ),
+	            React.createElement(
+	              'li',
+	              { className: 'col-md-3' },
+	              React.createElement(
+	                'a',
+	                { href: 'https://github.com/auldsy-ababua', target: '_blank' },
+	                React.createElement('img', { className: 'icon', src: 'images/github.png' })
+	              )
+	            ),
+	            React.createElement(
+	              'li',
+	              { className: 'col-md-3' },
+	              React.createElement(
+	                'a',
+	                { href: 'https://plus.google.com/u/0/101893123188561927210/posts', target: '_blank' },
+	                React.createElement('img', { className: 'icon', src: 'images/gplus.png' })
+	              )
+	            ),
+	            React.createElement(
+	              'li',
+	              { className: 'col-md-3' },
+	              React.createElement(
+	                'a',
+	                { href: 'skype:caulds989?call' },
+	                React.createElement('img', { className: 'icon', src: 'images/skype.png' })
+	              )
+	            )
+	          )
+	        )
+	      )
 	    );
 	  }
 	});
@@ -34765,6 +34831,49 @@
 	
 	module.exports = Container;
 	module.exports.Footer = Footer;
+
+/***/ },
+/* 213 */,
+/* 214 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(1);
+	var connect = __webpack_require__(172).connect;
+	var store = __webpack_require__(200);
+	var actions = __webpack_require__(203);
+	
+	var Title = React.createClass({
+	  displayName: 'Title',
+	
+	  render: function render() {
+	    return React.createElement(
+	      'div',
+	      { className: 'Title' },
+	      React.createElement(
+	        'div',
+	        { className: 'container' },
+	        React.createElement(
+	          'h2',
+	          { id: 'titleHeader' },
+	          'Grub Finder!'
+	        )
+	      )
+	    );
+	  }
+	});
+	
+	var mapStateToProps = function mapStateToProps(state, props) {
+	  return {
+	    error: state.error
+	  };
+	};
+	
+	var Container = connect(mapStateToProps)(Title);
+	
+	module.exports = Container;
+	module.exports.Footer = Title;
 
 /***/ }
 /******/ ]);
