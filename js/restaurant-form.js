@@ -12,7 +12,7 @@ var RestaurantForm = React.createClass({
       let results;
 
     return (
-      <div className="RestaurantForm">
+      <div className="RestaurantForm container">
         <form id="form" className="form-inline" onSubmit={this.getRecommendations} type="text">
           <div className="form-group">
             <input className="form-control" id="zipInput" type="text" placeholder="Zip Code or City" ref="zip" aria-describedby="basic-addon2"/>

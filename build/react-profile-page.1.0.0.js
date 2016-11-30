@@ -56,7 +56,7 @@
 	var RestaurantForm = __webpack_require__(209);
 	var DisplayRecs = __webpack_require__(210);
 	var Footer = __webpack_require__(212);
-	var Title = __webpack_require__(214);
+	var Title = __webpack_require__(213);
 	
 	var CapstoneApp = React.createClass({
 	    displayName: 'CapstoneApp',
@@ -34598,7 +34598,7 @@
 	
 	    return React.createElement(
 	      'div',
-	      { className: 'RestaurantForm' },
+	      { className: 'RestaurantForm container' },
 	      React.createElement(
 	        'form',
 	        { id: 'form', className: 'form-inline', onSubmit: this.getRecommendations, type: 'text' },
@@ -34763,11 +34763,7 @@
 	      React.createElement(
 	        'h2',
 	        { id: 'footerHeader', className: 'fancy' },
-	        React.createElement(
-	          'span',
-	          null,
-	          'CONTACT THE DEVELOPER!'
-	        )
+	        'CONTACT THE DEVELOPER!'
 	      ),
 	      React.createElement(
 	        'div',
@@ -34833,8 +34829,7 @@
 	module.exports.Footer = Footer;
 
 /***/ },
-/* 213 */,
-/* 214 */
+/* 213 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

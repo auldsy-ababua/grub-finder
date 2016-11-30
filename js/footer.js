@@ -8,7 +8,7 @@ var Footer = React.createClass({
   render: function() {
     return (
       <div className="Footer">
-        <h2 id="footerHeader" className="fancy"><span>CONTACT THE DEVELOPER!</span></h2>
+        <h2 id="footerHeader" className="fancy">CONTACT THE DEVELOPER!</h2>
         <div id="social-media-outer">
           <div>
             <ul className="row" id="horizontal-list">
