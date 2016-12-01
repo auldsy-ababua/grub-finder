@@ -17,7 +17,7 @@ var RestaurantForm = React.createClass({
           <div className="form-group">
             <input className="form-control" id="zipInput" type="text" placeholder="Zip Code or City" ref="zip" aria-describedby="basic-addon2"/>
             <input className="form-control" id="kindInput" type="text" placeholder="Food Type" ref="kind"/>
-            <button id="button" className="btn btn-outline-secondary" type="submit">Get Results!</button>
+            <button id="button" className="btn btn-outline-secondary form-control" type="submit">Get Results!</button>
           </div>
         </form>
       </div>

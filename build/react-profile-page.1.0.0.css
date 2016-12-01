@@ -70,38 +70,13 @@ input {
   background-color: #cce5f9;
   width: 100%;
   bottom: 0;
+  height: 150px;
 }
 #footerHeader {
   text-align: center;
   margin: auto;
   padding-top: .5em !important;
   font-family: 'Bungee Inline', cursive;
-}
-.fancy {
-  line-height: 0.5;
-  text-align: center;
-}
-.fancy span {
-  display: inline-block;
-  position: relative;
-}
-.fancy span:before,
-.fancy span:after {
-  content: "";
-  position: absolute;
-  height: 5px;
-  border-bottom: 1px solid black;
-  border-top: 1px solid black;
-  top: 0;
-  width: 50%;
-}
-.fancy span:before {
-  right: 100%;
-  margin-right: 15px;
-}
-.fancy span:after {
-  left: 100%;
-  margin-left: 15px;
 }
 #social-media-outer {
   height: 84px;
@@ -114,11 +89,16 @@ input {
 }
 .row {
   margin: 0 auto;
+  padding-left: 0px;
 }
 ul#horizontal-list {
   list-style: none;
   padding-top: 20px;
   text-align: center;
+  width: 100%;
+  margin-right: 0px;
+  margin-left: 0px;
+  overflow: hidden;
 }
 ul#horizontal-list li {
   display: inline;
@@ -129,7 +109,7 @@ ul#horizontal-list li {
   max-height: 4em;
 }
 /*---MOBILE---*/
-@media only screen and (max-device-width: 480px) {
+@media screen and (max-width: 500px) {
   body {
     font-family: Arial;
     height: 100%;
@@ -163,9 +143,10 @@ ul#horizontal-list li {
     text-align: center;
     margin: auto;
     font-family: 'Lobster', cursive;
-    font-size: 3rem;
+    font-size: 2.5rem;
     font-weight: bolder;
     vertical-align: middle;
+    padding-top: 17px;
   }
   #form {
     margin: 0 auto;
@@ -209,32 +190,6 @@ ul#horizontal-list li {
     padding-top: .5em !important;
     font-family: 'Bungee Inline', cursive;
   }
-  .fancy {
-    line-height: 0.5;
-    text-align: center;
-  }
-  .fancy span {
-    display: inline-block;
-    position: relative;
-  }
-  .fancy span:before,
-  .fancy span:after {
-    content: "";
-    position: absolute;
-    height: 5px;
-    border-bottom: 1px solid black;
-    border-top: 1px solid black;
-    top: 0;
-    width: 50%;
-  }
-  .fancy span:before {
-    right: 100%;
-    margin-right: 15px;
-  }
-  .fancy span:after {
-    left: 100%;
-    margin-left: 15px;
-  }
   #social-media-outer {
     height: 84px;
     background: url(images/bar-bg.jpg) repeat-x;
@@ -257,8 +212,8 @@ ul#horizontal-list li {
   }
   .icon {
     width: 100%;
-    max-width: 4em;
-    max-height: 4em;
+    max-width: 1.91rem;
+    max-height: 1.91rem;
   }
 }
 /*# sourceMappingURL=react-profile-page.1.0.0.css.map */

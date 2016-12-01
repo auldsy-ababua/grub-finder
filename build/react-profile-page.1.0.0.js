@@ -34609,7 +34609,7 @@
 	          React.createElement('input', { className: 'form-control', id: 'kindInput', type: 'text', placeholder: 'Food Type', ref: 'kind' }),
 	          React.createElement(
 	            'button',
-	            { id: 'button', className: 'btn btn-outline-secondary', type: 'submit' },
+	            { id: 'button', className: 'btn btn-outline-secondary form-control', type: 'submit' },
 	            'Get Results!'
 	          )
 	        )
