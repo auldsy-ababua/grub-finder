@@ -8,6 +8,10 @@ html {
 }
 #app {
   min-height: 100%;
+  position: relative;
+}
+#app > div {
+  min-height: 100vh;
 }
 /* --- HEADER --- */
 .Title {
@@ -28,6 +32,9 @@ html {
   text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
   text-align: center;
   padding-top: 10px;
+}
+.card-title {
+  min-height: 45px;
 }
 #titleHeader {
   text-align: center;
@@ -65,21 +72,27 @@ input {
   display: block;
   margin: auto;
 }
+.DisplayRecs {
+  padding-bottom: 100px;
+}
 /*social media footer*/
 .Footer {
   background-color: #cce5f9;
   width: 100%;
   bottom: 0;
-  height: 150px;
+  height: 100px;
+  position: absolute;
+  border-top: 5px solid #FF9983;
 }
 #footerHeader {
   text-align: center;
   margin: auto;
   padding-top: .5em !important;
   font-family: 'Bungee Inline', cursive;
+  font-size: 1.5rem;
 }
 #social-media-outer {
-  height: 84px;
+  height: 60px;
   background: url(images/bar-bg.jpg) repeat-x;
 }
 .table {
@@ -105,8 +118,7 @@ ul#horizontal-list li {
 }
 .icon {
   width: 100%;
-  max-width: 4em;
-  max-height: 4em;
+  max-width: 2em;
 }
 /*---MOBILE---*/
 @media screen and (max-width: 500px) {

@@ -41,7 +41,7 @@ exports.getRecommendationsError = getRecommendationsError;
 
 var getZipAndKind = function(zip, kind) {
     return function(dispatch) {
-        return fetch("http://localhost:8080/recommendations/" + zip + "/" + kind, {
+        return fetch("http://localhost:8080/recommendations/" + zip + "/" + kind + "&limit=18", {
           method: "GET"
         })
         .then(function(response) {
