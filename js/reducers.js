@@ -1,40 +1,30 @@
-var actions = require('./actions');
+import {POST_SURVEY} from "./actions";
+import { handle } from 'redux-pack';
 
 var initialState = {
   type: null,
-  showMessage: false,
-  zip: null,
-  kind: null,
-  recommendations: null
-};
+  searchText: null,
+  };
 
-var capstoneApp = function (state,action) {
-    var recommendations;
-    var newState = Object.assign({}, state);
-    if (action.type === 'BUTTON_PRESS') {
-        newState.showMessage = !newState.showMessage;
-
-    }
-
-    else if (action.type === actions.GET_RECOMMENDATIONS_SUCCESS) {
-       newState = Object.assign({}, state, {
-           recommendations: action.recommendations,
-           zip: action.zip,
-           kind: action.kind
-       });
-       console.log(action.recommendations);
-       return newState;
-   }
-   else if (action.type === actions.GET_RECOMMENDATIONS_ERROR) {
-
-       newState = Object.assign({}, state, {
-           error: actions.error
-       });
-       return newState;
-   }
-
-    return newState;
+var SurpayApp = function(state, action) {
+    state = state || initialState;
+    const { type, payload } = action;
+    switch (type) {
+    case POST_SURVEY:
+      return handle(state, action, {
+        start: s => ({
+          ...s,
+          isLoading: true,
+          surveyError: null
+        }),
+        finish: s => ({ ...s, isLoading: false }),
+        failure: s => ({ ...s, surveyError: payload }),
+        success: s => ({ ...s, survey: payload }),
+      });
+    default:
+      return state;
+  }
 };
 
 
-exports.capstoneApp = capstoneApp;
+exports.SurpayApp = SurpayApp;

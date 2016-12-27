@@ -7,69 +7,21 @@ var consumerSecret = 'gpLvAC71QtQJVbxK-Eq_yXykkqg';
 var token = '8uu9MvVHdkv-TE3Im88DXsrRMzzvk2kB';
 var tokenSecret = 'lmLosFTHQ5lK1qmGZnn6px6nv64';
 
-var BUTTON_PRESS = 'BUTTON_PRESS';
-var buttonPress = function() {
+var POST_SURVEY = 'POST_SURVEY';
+var payload = {answers:[{question: 1, answers: 5}, {question: 2, answers: 5}, {question: 3, answers: 5}, {question: 4, answers: 5}, {question: 5, answers: ""}]};
+var postSurvey = function() {
+    var data = new FormData();
+    data.append( "json", JSON.stringify( payload ) );
     return {
-        type: BUTTON_PRESS
+        type: POST_SURVEY,
+        promise: fetch("/addsurvey", {method:"POST",
+        headers: {
+         'Accept': 'application/json',
+         'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+        })
     };
 };
-
-exports.BUTTON_PRESS = BUTTON_PRESS;
-exports.buttonPress = buttonPress;
-
-var GET_RECOMMENDATIONS_SUCCESS = 'GET_RECOMMENDATIONS_SUCCESS';
-var getRecommendationsSuccess = function(recommendations) {
-    return {
-        type: GET_RECOMMENDATIONS_SUCCESS,
-        recommendations: recommendations
-    };
-};
-
-exports.GET_RECOMMENDATIONS_SUCCESS = GET_RECOMMENDATIONS_SUCCESS;
-exports.getRecommendationsSuccess = getRecommendationsSuccess;
-
-var GET_RECOMMENDATIONS_ERROR = 'GET_RECOMMENDATIONS_ERROR';
-var getRecommendationsError = function(error) {
-    return {
-        type: GET_RECOMMENDATIONS_ERROR,
-        error: error
-    };
-};
-
-exports.GET_RECOMMENDATIONS_ERROR = GET_RECOMMENDATIONS_ERROR;
-exports.getRecommendationsError = getRecommendationsError;
-
-var getZipAndKind = function(zip, kind) {
-    return function(dispatch) {
-        return fetch("http://localhost:8080/recommendations/" + zip + "/" + kind + "&limit=18", {
-          method: "GET"
-        })
-        .then(function(response) {
-
-            if (response.status < 200 || response.status >= 300) {
-                var error = new Error(response.statusText);
-                error.response = response;
-                //throw error;
-            }
-            return response;
-        })
-        .then(function(response) {
-
-            return response.json();
-        })
-        .then(function(data) {
-            var description = data.description;
-            console.log(data);
-            return dispatch (
-                getRecommendationsSuccess(data.businesses, zip, kind)
-            );
-        })
-        .catch(function(error) {
-            return dispatch(
-                getRecommendationsError(error)
-            );
-        });
-    };
-};
-
-exports.getZipAndKind = getZipAndKind;
+exports.POST_SURVEY = POST_SURVEY;
+exports.postSurvey = postSurvey;
