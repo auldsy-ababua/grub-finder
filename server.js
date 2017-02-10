@@ -68,5 +68,5 @@ app.get('/recommendations/:zip/:kind', jsonParser, function(req, res) {
 
 
 
-app.listen(8080);
+app.listen(80);
 exports.app = app;
