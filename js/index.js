@@ -6,7 +6,6 @@ var ReactDOM = require('react-dom');
 var Provider = require('react-redux').Provider;
 
 var store = require('./store');
-var HelloWorld = require('./hello-world');
 var RestaurantForm = require('./restaurant-form');
 var DisplayRecs = require('./display-recs');
 var Footer = require('./footer');
