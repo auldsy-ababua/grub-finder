@@ -23988,7 +23988,7 @@
 	
 	var getZipAndKind = function getZipAndKind(zip, kind) {
 	    return function (dispatch) {
-	        var prodURL = "https://grub-finder.herokuapp.com/";
+	        var prodURL = "https://grub-finder.herokuapp.com/recommendations/";
 	        //var devURL = "http://localhost:8080/recommendations/";
 	        return fetch(prodURL + zip + "/" + kind, {
 	            method: "GET"
