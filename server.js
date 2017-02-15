@@ -12,7 +12,7 @@ var consumerKey = '2ycjVcXfdZOJ1WLCzf19iQ';
 var consumerSecret = 'gpLvAC71QtQJVbxK-Eq_yXykkqg';
 var token = '8uu9MvVHdkv-TE3Im88DXsrRMzzvk2kB';
 var tokenSecret = 'lmLosFTHQ5lK1qmGZnn6px6nv64';
-var config = require("config");
+var config = require("./config");
 
 var app = express();
 
