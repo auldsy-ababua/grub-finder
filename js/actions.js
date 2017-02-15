@@ -41,7 +41,9 @@ exports.getRecommendationsError = getRecommendationsError;
 
 var getZipAndKind = function(zip, kind) {
     return function(dispatch) {
-        return fetch("http://localhost:8080/recommendations/" + zip + "/" + kind, {
+        var prodURL = "https://grub-finder.herokuapp.com/"
+        //var devURL = "http://localhost:8080/recommendations/";
+        return fetch(prodURL + zip + "/" + kind, {
           method: "GET"
         })
         .then(function(response) {
