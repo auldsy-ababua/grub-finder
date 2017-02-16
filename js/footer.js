@@ -14,22 +14,22 @@ var Footer = React.createClass({
             <ul className="row" id="horizontal-list">
               <li className="col-md-3">
                 <a href="mailto:caulds989@gmail.com?Subject=Just%20viewed%20your%20portfolio">
-                    <img className="icon" src="images/email.png"/>
+                    <img className="icon" src="./images/email.png"/>
                 </a>
               </li>
               <li className="col-md-3">
                 <a href="https://github.com/auldsy-ababua" target="_blank">
-                    <img className="icon" src="images/github.png"/>
+                    <img className="icon" src="./images/github.png"/>
                 </a>
               </li>
               <li className="col-md-3">
                 <a href="https://plus.google.com/u/0/101893123188561927210/posts" target="_blank">
-                    <img className="icon" src="images/gplus.png"/>
+                    <img className="icon" src="./images/gplus.png"/>
                 </a>
               </li>
               <li className="col-md-3">
                 <a href="skype:caulds989?call">
-                    <img className="icon" src="images/skype.png"/>
+                    <img className="icon" src="./images/skype.png"/>
                 </a>
               </li>
             </ul>
