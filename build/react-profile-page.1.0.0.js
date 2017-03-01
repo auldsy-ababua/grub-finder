@@ -35412,7 +35412,7 @@
 	              React.createElement(
 	                'a',
 	                { href: 'mailto:caulds989@gmail.com?Subject=Just%20viewed%20your%20portfolio' },
-	                React.createElement('img', { className: 'icon', src: './images/email.png' })
+	                React.createElement('img', { className: 'icon', src: 'images/email.png' })
 	              )
 	            ),
 	            React.createElement(
@@ -35421,7 +35421,7 @@
 	              React.createElement(
 	                'a',
 	                { href: 'https://github.com/auldsy-ababua', target: '_blank' },
-	                React.createElement('img', { className: 'icon', src: './images/github.png' })
+	                React.createElement('img', { className: 'icon', src: 'images/github.png' })
 	              )
 	            ),
 	            React.createElement(
@@ -35430,7 +35430,7 @@
 	              React.createElement(
 	                'a',
 	                { href: 'https://plus.google.com/u/0/101893123188561927210/posts', target: '_blank' },
-	                React.createElement('img', { className: 'icon', src: './images/gplus.png' })
+	                React.createElement('img', { className: 'icon', src: 'images/gplus.png' })
 	              )
 	            ),
 	            React.createElement(
@@ -35439,7 +35439,7 @@
 	              React.createElement(
 	                'a',
 	                { href: 'skype:caulds989?call' },
-	                React.createElement('img', { className: 'icon', src: './images/skype.png' })
+	                React.createElement('img', { className: 'icon', src: 'images/skype.png' })
 	              )
 	            )
 	          )
