@@ -72,10 +72,6 @@
 	    }
 	});
 	
-	$('#button').click(function () {
-	    $('.Footer').css('position', 'inherit');
-	});
-	
 	//Use ReactDOM.render to render the Game component into the <div>
 	document.addEventListener('DOMContentLoaded', function () {
 	    ReactDOM.render(React.createElement(
