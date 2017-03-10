@@ -7,6 +7,10 @@ var RestaurantForm = React.createClass({
   getRecommendations: function(event) {
     event.preventDefault();
     this.props.dispatch(actions.getZipAndKind(this.refs.zip.value, this.refs.kind.value));
+    $('#button').click(
+        function(){
+            $('.Footer').css('position','inherit');
+        });
   },
   render: function() {
       let results;
