@@ -67,7 +67,7 @@ input {
 .Footer {
   background-color: #cce5f9;
   width: 100%;
-  position: fixed;
+  position: inherit;
   bottom: 0;
 }
 #footerHeader {
