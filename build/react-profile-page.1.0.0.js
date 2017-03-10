@@ -44,7 +44,6 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	//Create an index.js file containing a component called Game
 	"use strict";
 	
 	var React = __webpack_require__(1);

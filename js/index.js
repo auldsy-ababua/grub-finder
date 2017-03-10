@@ -1,4 +1,3 @@
-//Create an index.js file containing a component called Game
 "use strict"
 
 var React = require('react');

@@ -10,6 +10,14 @@ html {
 #app {
   min-height: 100%;
 }
+[data-reactroot] {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.DisplayRecs {
+  flex-grow: 1;
+}
 /* --- HEADER --- */
 .Title {
   background: url(images/bowl.jpg) no-repeat;
@@ -67,9 +75,6 @@ input {
 /*social media footer*/
 .Footer {
   background-color: #cce5f9;
-  width: 100%;
-  position: fixed;
-  bottom: 0;
 }
 #footerHeader {
   text-align: center;
