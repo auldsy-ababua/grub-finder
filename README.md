@@ -19,4 +19,4 @@ For these reasons and because of time constraints on the project, creating a ver
 
 ### _TECHNOLOGY USED_:<br>
 1. Server-side: Node/Express<br> 
-2. Client-side: HTML5, LESS, [ReactJS](https://facebook.github.io/react/) 
+2. Client-side: HTML5, LESS, [ReactJS](https://facebook.github.io/react/), jQuery 
