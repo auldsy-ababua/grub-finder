@@ -7,8 +7,10 @@ https://grub-finder.herokuapp.com/
 1. [Yelp API 2.0](https://www.yelp.com/developers/documentation/v2/overview)
 
 ### _SUMMARY_:<br> 
-The function of the app is basic: input a zip code and a category of restaurant into the form and hit enter, then watch as the page populates with results, each featuring images, links, name, and star-rating to help guide you in your search. 
-This was my first experience utilizing Facebook's front-end framework React. I also wanted to use Yelp's API in order to better understand API implementation and also because I am a foodie who never knows where to eat.
+The function of the app is basic: input a zip code and a category of restaurant into the form and hit enter, then watch as the page populates with results, each featuring images, links, name, and star-rating to help guide you in your search.<br> 
+
+This was my first experience utilizing Facebook's front-end framework React. I also wanted to use Yelp's API in order to better understand API implementation and also because I am a foodie who never knows where to eat.<br>
+
 For these reasons and because of time constraints on the project, creating a very simple suggestion app was an obvious choice. 
 
 ### _FUTURE FEATURES_:<br>
