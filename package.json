@@ -1,7 +1,7 @@
 {
   "name": "react-profile-page",
   "version": "1.0.0",
-  "description": "My first react page",
+  "description": "Grub Finder",
   "main": "js/index.js",
   "scripts": {
     "start": "node server.js",
