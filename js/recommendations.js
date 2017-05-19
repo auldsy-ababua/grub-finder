@@ -4,24 +4,27 @@ var store = require('./store');
 var actions = require('./actions');
 
 
-var Recommendations = React.createClass({
+ class Recommendations extends React.Component {
 
-  truncate: function () {
+  truncate () {
       let string = this.props.item.name;
       let length = 24;
       return string.length > length ?
       string.substring(0, length - 3) + "..." :
       string
-  },
+  }
 
-  render: function() {
+  render() {
 
     let restaurantName = this.truncate();
-    console.log (restaurantName);
-
+    console.log ('restaurantName');
+ 
     return (
+
+
+
       <div className="card col-md-4">
-        <div className="card-block">
+         <div className="card-block">
           <h5 className="card-title">{restaurantName}</h5>
         </div>
         <img className="img" src={this.props.item.image_url} alt="Card image"/>
@@ -30,9 +33,11 @@ var Recommendations = React.createClass({
           <a href={this.props.item.url} className="card-link">Yelp Page</a>
         </div>
       </div>
+
+
     )
   }
-});
+};
 var mapStateToProps = function(state, props) {
     return {
         recommendations: state.recommendations

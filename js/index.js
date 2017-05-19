@@ -9,23 +9,24 @@ var RestaurantForm = require('./restaurant-form');
 var DisplayRecs = require('./display-recs');
 var Footer = require('./footer');
 var Title = require('./title');
-
+var Model = require('./model');
 
 var CapstoneApp = React.createClass({
-    render: function() {
+    render: function () {
         return (
-          <div>
-            <Title />
-            <RestaurantForm />
-            <DisplayRecs />
-            <Footer />
-          </div>
+            <div>
+                <Model />
+                <Title />
+                <RestaurantForm />
+                <DisplayRecs />
+                <Footer />
+             </div>
         );
     }
 });
 
 //Use ReactDOM.render to render the Game component into the <div>
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     ReactDOM.render(
         <Provider store={store}>
             <CapstoneApp />

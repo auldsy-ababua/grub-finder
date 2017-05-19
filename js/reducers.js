@@ -12,18 +12,21 @@ var capstoneApp = function (state,action) {
     var recommendations;
     var newState = Object.assign({}, state);
     if (action.type === 'BUTTON_PRESS') {
+
+        console.log('asd')
         newState.showMessage = !newState.showMessage;
 
     }
 
     else if (action.type === actions.GET_RECOMMENDATIONS_SUCCESS) {
-       newState = Object.assign({}, state, {
+
+        newState = Object.assign({}, state, {
            recommendations: action.recommendations,
            zip: action.zip,
            kind: action.kind
        });
-       console.log(action.recommendations);
-       return newState;
+       console.log('action.recommendations',action.recommendations);
+      // return newState;
    }
    else if (action.type === actions.GET_RECOMMENDATIONS_ERROR) {
 

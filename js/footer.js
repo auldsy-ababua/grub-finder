@@ -3,7 +3,6 @@ var connect = require('react-redux').connect;
 var store = require('./store');
 var actions = require('./actions');
 
-
 var Footer = React.createClass({
   render: function() {
     return (
